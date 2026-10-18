@@ -1,0 +1,69 @@
+name: Publish hard-disk lab website
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - hard-disk-console-pages-ready.zip
+      - .github/workflows/publish-pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Unpack the prebuilt static website (no rebuilding)
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path, PurePosixPath
+          from zipfile import ZipFile
+          from shutil import copyfileobj
+          archive = Path("hard-disk-console-pages-ready.zip")
+          if not archive.is_file():
+              raise SystemExit("Upload hard-disk-console-pages-ready.zip to repository root first.")
+          destination_root = Path("site")
+          with ZipFile(archive) as z:
+              for entry in z.infolist():
+                  rel = PurePosixPath(entry.filename)
+                  if not rel.parts or rel.is_absolute() or '..' in rel.parts or chr(92) in entry.filename:
+                      raise SystemExit("Unexpected path in website ZIP.")
+                  dest = destination_root.joinpath(*rel.parts)
+                  if entry.is_dir():
+                      dest.mkdir(parents=True, exist_ok=True)
+                  else:
+                      dest.parent.mkdir(parents=True, exist_ok=True)
+                      with z.open(entry) as src, dest.open("wb") as out:
+                          copyfileobj(src, out)
+          if not (destination_root / "index.html").is_file():
+              raise SystemExit("Website ZIP must contain index.html at its root.")
+          print("Static website prepared without modifying source files.")
+          PY
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+        id: deployment
