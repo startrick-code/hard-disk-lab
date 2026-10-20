@@ -7,6 +7,7 @@ on:
     paths:
       - hard-disk-console-pages-ready.zip
       - .github/workflows/publish-pages.yml
+      - 'electrochemical-lab/**'
   workflow_dispatch:
 
 permissions:
@@ -55,6 +56,13 @@ jobs:
               raise SystemExit("Website ZIP must contain index.html at its root.")
           print("Static website prepared without modifying source files.")
           PY
+
+      - name: Include electrochemical laboratory as a separate subsite
+        shell: bash
+        run: |
+          test -s electrochemical-lab/index.html
+          mkdir -p site/electrochemical-lab
+          cp electrochemical-lab/index.html site/electrochemical-lab/index.html
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
