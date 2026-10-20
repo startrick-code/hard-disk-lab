@@ -1,0 +1,915 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0a111b"><meta name="description" content="从完整电路到电极界面，探索由能斯特方程与法拉第定律驱动的锌铜原电池。"><title>电化学与电路物理联合实验室</title></head><body><div id="app"></div><style>
+:root{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:#dce5ee;background:#0a111b;font-synthesis:none;font-size:14px;color-scheme:dark;--mint:#79d9be;--line:#24313f;--muted:#80919f;--panel:#101a26;--copper:#d8a272;--zinc:#a4bdce}*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer}button,a,input,select{outline-offset:4px}button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--mint)}button{border:1px solid var(--line);color:#bdcbd5;background:#14202c;border-radius:7px;min-height:44px;transition:background .18s,border-color .18s}button:hover{background:#1c2e3a;border-color:#486457}button:disabled{cursor:default;opacity:.6}button.active{color:var(--mint);background:#1b3535;border-color:#3e7165}button.primary{background:#83dec3;color:#102d2a;font-weight:650;border-color:#83dec3;padding:0 20px}button.primary:hover{background:#a1ecd5}button.secondary{background:#1b2c37;padding:8px 12px}.full{width:100%}.icon-button{background:transparent;padding:0 12px}.text-button{background:transparent;border:none;color:#9aafbd;min-height:44px}.topbar{height:90px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 32px;background:#0d1621}.brand{display:flex;align-items:center;gap:14px}.brand-icon{color:#7ae0c1;width:43px;height:43px;border:1px solid #42695e;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,#203e3a,#10232b)}h1{font-size:19px;font-weight:650;letter-spacing:.6px;margin:0 0 6px}.brand p{font-size:10px;letter-spacing:.45px;color:#8096a5;margin:0}.version{font-size:9px;letter-spacing:1.3px;color:#a4b4c2;border:1px solid #31404e;border-radius:4px;padding:5px 7px;margin-left:6px}.run-controls{display:flex;align-items:center;gap:12px}.clock{display:grid;grid-template-columns:9px auto;align-items:center;column-gap:8px;margin-right:12px}.clock b{font:14px ui-monospace,SFMono-Regular,Consolas,monospace;font-variant-numeric:tabular-nums}.clock small{grid-column:2;font-size:9px;color:#768d9a;margin-top:5px}.live-dot{display:inline-block;background:var(--mint);width:6px;height:6px;border-radius:50%;box-shadow:0 0 9px #79d9be33}main{max-width:1600px;margin:auto;padding:30px 32px 0}.intro{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}.eyebrow{font-size:9px;letter-spacing:1.7px;color:#7db6a9;font-weight:600}.intro h2{font-size:27px;letter-spacing:1px;font-weight:550;margin:12px 0 8px}.intro p{font-size:12px;color:#8298a7;margin:0}.model-badge{display:flex;align-items:center;gap:10px;color:#c0cbd6;font-size:12px}.model-badge>span:nth-of-type(2){border-left:1px solid #36434e;padding-left:12px;color:#91a4b5;font-family:monospace}.model-badge i{color:#8195a5;font-style:normal;font-size:11px}.presets{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.presets button{display:flex;align-items:center;gap:12px;padding:14px 15px;background:#111d29;text-align:left;border-color:#273541}.presets button:hover,.presets button.active{background:#172d31;border-color:#4b776c}.presets button>b{height:32px;width:32px;display:grid;place-items:center;color:#90b7ae;font:15px ui-monospace,monospace;border:1px solid #354b4d;border-radius:7px;background:#1a2a31}.presets button>span{font-size:13px;font-weight:550}.presets small{display:block;color:#7a919f;font-size:10px;font-weight:400;margin-top:5px}.presets .chevron{margin-left:auto;color:#6c8c92}.experiment-note{min-height:52px;display:flex;gap:15px;align-items:center;font-size:11px;margin:7px 0;color:#849aaa}.experiment-note b{color:#a9c6ba;white-space:nowrap}.experiment-note code{margin-left:auto;color:#8ba9a4;font-size:10px;text-align:right;white-space:nowrap}.workspace{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start}.panel{border:1px solid var(--line);background:#101a25;border-radius:11px;overflow:hidden}.scene-toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:13px 18px;border-bottom:1px solid var(--line);background:#111d28}.segmented{display:flex;gap:4px;background:#0b1520;padding:4px;border:1px solid #24323e;border-radius:7px}.segmented button{border:1px solid transparent;min-height:35px;padding:7px 12px;background:transparent;font-size:11px;color:#7b8f9e}.segmented button span{margin-left:4px}.segmented button.active{background:#203b3c;border-color:#3b5e59;color:#9de3cd}.status{font-size:10px;white-space:nowrap;color:#91dbbe}.status.inactive{color:#adad9c}.metrics{display:grid;grid-template-columns:repeat(4,1fr);padding:24px 20px 18px;background:linear-gradient(180deg,#13212c,#101a25)}.metrics>div{padding:0 22px;border-right:1px solid #293641}.metrics>div:first-child{padding-left:9px}.metrics>div:last-child{border:none}.metrics span{display:block;font-size:10px;color:#8fa2ae;margin-bottom:8px}.metrics i{font-family:Georgia,serif;color:#b3c6d1;margin-left:4px;font-size:13px}.metrics strong{font:500 clamp(21px,2.25vw,32px) ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:-1px}.metrics small{font:11px sans-serif;letter-spacing:0;color:#7a92a3}.scene-wrap{position:relative;background:radial-gradient(ellipse at 52% 62%,#152b33aa,transparent 64%)}.scene-caption{height:41px;display:flex;justify-content:space-between;align-items:center;padding:0 24px;color:#607e8b;font:9px ui-monospace,monospace;letter-spacing:1px}.scene-caption .chip{min-height:28px;padding:3px 10px;font-size:10px;margin-left:4px}#scene{display:block;width:100%;height:auto;touch-action:none;user-select:none;-webkit-user-select:none;overflow:hidden}#scene .wire{fill:none;stroke:#76b8a9;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 3px #6ad8bb30)}#scene text{pointer-events:none}#scene .label{fill:#b4c6d0;font-size:13px}#scene .muted{fill:#7e9aaa;font-size:12px}#scene .tiny{fill:#89a5b0;font-size:11px}#scene .glass{fill:none;stroke:#6c8999;stroke-width:2;stroke-opacity:.65}#scene .resistor{fill:#24312f;stroke:#c1ba86;stroke-width:2}#scene .meter{fill:#11222a;stroke:#4c8c83;stroke-width:1.5}#scene .meter-symbol{fill:#9bd7c4;font-family:Georgia,serif;font-size:20px}#scene .switch-line{stroke:#8ad4bc;stroke-width:3}#scene .measure-line{stroke:#4b6571;stroke-width:1;stroke-dasharray:4 5;fill:none}#scene .metal-symbol{font:bold 24px Georgia,serif;fill:#182730}#scene .focus-ring{fill:#0c2029;stroke:#598779;stroke-width:1}#scene .focus-text{fill:#7fbea9;font-size:18px}#scene .reaction{fill:#c2d4dc;font:15px Georgia,serif}#scene .scene-heading{fill:#b1c9d3;font-size:16px}#scene .ion-text{fill:#c3d5df;font:8px sans-serif}#scene .clickable{cursor:pointer}.mint,#scene .mint{color:#82d9bd;fill:#82d9bd}.gold,#scene .gold{color:#dfb57d;fill:#dfb57d}.purple,#scene .purple{color:#b79cdd;fill:#b79cdd}.zinc-text,#scene .zinc-text{color:#a4bdce;fill:#a4bdce}.copper-text,#scene .copper-text{color:#dca577;fill:#dca577}.blue{color:#6bace0}.red{color:#dca39c}.lavender{color:#9badd5}#scene .mint,#scene .gold,#scene .purple,#scene .zinc-text,#scene .copper-text{font-size:12px}.zoom-controls{position:absolute;right:18px;bottom:13px;display:flex;align-items:center;border:1px solid #2c424b;border-radius:7px;background:#10202ae8;overflow:hidden}.zoom-controls button{border:none;border-radius:0;background:transparent;min-height:35px;min-width:35px;font-size:16px;padding:3px 8px}.zoom-controls button:hover{background:#213d40}.zoom-controls output{color:#849da9;font:10px ui-monospace,monospace;width:38px;text-align:center}.zoom-controls #deeper{font-size:11px;border-left:1px solid #2c424b;color:#8ecdbb}.scene-legend{display:flex;gap:19px;align-items:center;padding:13px 24px 17px;font-size:10px;color:#8ba0ae}.dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px}.zinc{background:#a4bdce}.copper{background:#dca577}.electron{background:#79d9be}.purple-bg{background:#b79cdd}.gold-bg{background:#dfb57d}.legend-hint{margin-left:auto;color:#617c8a;font-size:9px}.reaction-strip{display:flex;align-items:center;gap:18px;padding:15px 25px;border-top:1px solid #253840;background:#15272e;font-size:11px}.reaction-strip>span:first-child{color:#79a298;font-size:10px}.reaction-strip b{font:14px Georgia,serif;color:#bdd8cf}.reaction-strip>span:last-child{color:#90b4ab;font:10px ui-monospace,monospace;margin-left:auto}.scene-footnote{color:#6f8b98;font-size:10px;padding:12px 24px;line-height:1.7}.panel-heading{padding:19px 21px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}h3,h4{font-weight:550;margin:0}.panel-heading h3{font-size:14px}.panel-heading>span{font-size:8px;letter-spacing:1.3px;color:#667c8b}.control-group{padding:17px 21px;border-bottom:1px solid #23313d}.control-group:last-child{border:0}.switch-row{display:flex;align-items:center;justify-content:space-between;font-size:12px;margin-bottom:17px}.toggle{display:flex;align-items:center;gap:8px;padding:0;border:none;min-height:30px;background:transparent}.toggle:hover{background:transparent}.toggle span{width:29px;height:16px;border-radius:10px;background:#344451;position:relative}.toggle span:after{content:'';position:absolute;width:10px;height:10px;left:3px;top:3px;background:#8d9ca7;border-radius:50%}.toggle.on span{background:#417e6c}.toggle.on span:after{left:16px;background:#a7eed4}.toggle b{font-size:10px;font-weight:400;color:#7ea795}.label{display:block;color:#93a7b6;font-size:11px;margin:13px 0 10px}.label span{font-size:9px;float:right;color:#657c8a}.topology-options{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:17px}.topology-options button{font-size:10px;min-height:33px;padding:4px}.range-label{display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#8ea5b4;margin-top:11px}.range-label>span:last-child{font:11px ui-monospace,monospace;color:#c7d5df}.range-label i{color:#718996;font:10px sans-serif}.range-label output{font-variant-numeric:tabular-nums}input[type=range]{display:block;width:100%;height:23px;margin:2px 0;accent-color:#8ad6bb;cursor:pointer;background:transparent}input[type=range]::-webkit-slider-runnable-track{height:3px;background:#334b4e;border-radius:3px}input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;height:12px;width:12px;margin-top:-4.5px;border:2px solid #a2d9c7;border-radius:50%;background:#153d35}input[type=range]{-webkit-appearance:none;appearance:none}input[type=range]::-moz-range-track{height:3px;background:#334b4e}input[type=range]::-moz-range-thumb{height:10px;width:10px;border:2px solid #a2d9c7;border-radius:50%;background:#153d35}.subtle-row{display:flex;justify-content:space-between;font-size:10px;color:#6d8997;padding-top:8px}.subtle-row b{font-weight:400;color:#a5c8bb;font-family:monospace}.group-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}.group-title h4{font-size:12px}.group-title strong{font:17px ui-monospace,monospace;color:#cbdcd8}.group-title small{font:10px sans-serif;color:#7c9d98}.resistance-bar{display:flex;height:5px;border-radius:4px;overflow:hidden;margin-bottom:16px;gap:2px}.branch-data{font:10px ui-monospace,monospace;color:#8ba1af;margin-top:10px;line-height:2}.branch-data span{display:block}.branch-data b{font-weight:400;color:#a3d7c1}select{background:#121f2c;border:1px solid #31414f;border-radius:5px;color:#bfccd7;padding:9px 10px;min-height:36px;width:100%;font-size:11px}input[type=number]{background:#0e1b27;border:1px solid #31434f;color:#c4d6df;min-height:37px;width:100%;border-radius:5px;padding:7px;font:12px ui-monospace,monospace}.check-row{display:flex;gap:12px;align-items:center;margin-top:13px;flex-wrap:wrap}.check-row label{display:flex;align-items:center;gap:3px;font-size:10px;color:#90a6b3;min-height:30px}input[type=checkbox],input[type=radio]{accent-color:#8ed4be;width:13px;height:13px}summary{list-style:none;cursor:pointer;font-size:11px;display:flex;justify-content:space-between;align-items:center;min-height:25px}summary::-webkit-details-marker{display:none}summary span{color:#77968c}.help{font-size:11px;color:#7f99a7;line-height:1.9}.concentration-inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.concentration-inputs label{font-size:10px;color:#8da5b4}.concentration-inputs input{margin-top:7px}.error{font-size:11px;color:#edaaaa;line-height:1.6}.notice{margin:18px 0;padding:16px 20px;background:#302923;border:1px solid #6c5137;border-radius:7px;color:#e2c09d;font-size:12px;line-height:1.8}.analysis{margin-top:20px}.analysis-tabs{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:0 20px;border-bottom:1px solid #273643}.analysis-tabs>div{display:flex;gap:22px}.analysis-tabs [data-tab]{min-height:57px;background:transparent;border:none;border-radius:0;color:#849cab;position:relative;font-size:12px;padding:0 4px}.analysis-tabs [data-tab].active{color:#9cdfc9}.analysis-tabs [data-tab].active:after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:#8cddc3}.analysis .text-button{font-size:10px}.tab-content{padding:23px}.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 30px}.chart-grid article{min-width:0}.chart-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:12px}.chart-heading h3{font-size:12px;color:#b9cbd5}.chart-heading small{font-size:10px;color:#617c8d;margin-left:7px;font-weight:400}.line-key{font-size:9px;margin-left:13px;white-space:nowrap}.line-key:before{content:'';display:inline-block;background:currentColor;width:12px;height:2px;margin:0 5px 3px 0}.chart-grid svg,.potential-layout svg{width:100%;height:auto;display:block}.axis{font:10px ui-monospace,SFMono-Regular,monospace;fill:#708b9a}.chart-value{fill:#b5d9cb;font:11px ui-monospace,monospace}.insight{background:linear-gradient(110deg,#172b31,#12232e);border:1px solid #253d45;border-radius:8px;padding:20px 23px}.insight h3{font-size:16px;margin:10px 0 12px}.insight p{color:#92a9b6;font-size:11px;line-height:1.9;margin:0}.equation{font:14px Georgia,serif;line-height:1.7;color:#b8d7c9;margin:15px 0}.equation span{font-size:12px}.insight small{font-size:9px;color:#698793;line-height:1.7}.potential-toolbar{display:flex;justify-content:space-between;gap:20px;margin-bottom:22px}.potential-toolbar>label{display:flex;align-items:center;gap:10px;white-space:nowrap;font-size:11px;color:#8ea7b5}.potential-toolbar select{width:110px}.potential-layout{display:grid;grid-template-columns:1.6fr 1fr;gap:30px}.probe-panel{border:1px solid #2c4248;background:#13232e;border-radius:8px;padding:20px}.probe-panel h3{margin:10px 0 20px}.probe-inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px}.probe-inputs label{font-size:10px}.probe-inputs select{margin-top:7px}.probe-readout{font:35px ui-monospace,monospace;color:#9de3c8;margin:25px 0}.probe-readout small{font:14px sans-serif;color:#6d9289}.empty{padding:60px 30px;font-size:13px;color:#b4a996;line-height:1.9}.data-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:20px}.data-grid>div{border-bottom:1px solid #283946;padding-bottom:13px}.data-grid span{display:block;font-size:10px;color:#7f9aa9;margin-bottom:10px}.data-grid strong{font:15px ui-monospace,monospace;color:#c5d9dc}.data-grid small{font:9px sans-serif;color:#718c9a}.energy-section{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:30px}.energy-section h3{font-size:14px;margin-bottom:15px}.energy-bar{display:flex;height:32px;background:#20333e;border-radius:4px;overflow:hidden}.energy-bar span{display:flex;align-items:center;justify-content:center;white-space:nowrap;overflow:hidden;font-size:10px;color:#102c28;background:#7fc8ae}.energy-bar span+span{background:#bf996d;color:#332719}.checks p{font:10px ui-monospace,monospace;color:#91b4a6;line-height:1.8}.model-grid{display:grid;grid-template-columns:1fr 1fr;gap:35px 40px}.model-grid h3{font-size:17px;margin-top:12px}.model-grid p{font-size:12px;line-height:2;color:#91a6b4}.model-grid code{display:block;font:12px ui-monospace,monospace;color:#b5d1c9;line-height:1.8}.model-grid a{color:#8fd4bc;font-size:11px;text-underline-offset:4px}footer{display:flex;justify-content:space-between;align-items:center;padding:25px 0 30px;font-size:9px;color:#546f80}.footer-mark{display:flex;align-items:center;gap:9px;letter-spacing:1px;font-size:8px;color:#718d97}.footer-mark svg{width:19px;height:19px}[hidden]{display:none!important}
+@media(min-width:1500px){.workspace{grid-template-columns:minmax(0,1fr) 330px}.control-group{padding:20px 24px}.range-label{font-size:11px}.scene-wrap{max-height:690px}.scene-panel{min-width:0}}
+@media(max-width:1150px){main{padding:22px 20px 0}.topbar{padding:0 20px}.version{display:none}.workspace{grid-template-columns:minmax(0,1fr) 270px;gap:13px}.control-group{padding:14px 17px}.scene-toolbar{padding:12px}.segmented button{padding:7px 8px;font-size:10px}.scene-toolbar .status{font-size:9px}.metrics{padding:20px 13px}.metrics>div{padding:0 13px}.metrics strong{font-size:22px}.scene-legend{gap:11px;padding:10px 17px}.legend-hint{display:none}.reaction-strip{gap:10px;padding:14px}.reaction-strip b{font-size:12px}.reaction-strip>span:last-child{font-size:9px}.scene-footnote{padding:11px 15px}.experiment-note{font-size:10px}.experiment-note code{display:none}.presets button{padding:12px 10px;gap:10px}.presets button>span{font-size:12px}.presets small{font-size:9px}.intro h2{font-size:24px}.chart-heading{display:block}.chart-heading>div,.chart-heading>.line-key{display:block;text-align:right;margin-top:8px}.data-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:850px){.topbar{height:auto;min-height:100px;flex-wrap:wrap;padding:16px 18px;gap:15px}.brand{gap:9px}.brand h1{font-size:16px}.brand p{font-size:8px}.run-controls{margin-left:auto;gap:8px}.clock{margin-right:3px}.intro{align-items:flex-start;gap:20px}.model-badge{flex-wrap:wrap;max-width:180px;font-size:10px}.workspace{grid-template-columns:minmax(0,1fr) 245px;gap:10px}.scene-toolbar{flex-wrap:wrap;gap:9px}.segmented{flex:1}.segmented button{flex:1}.scene-toolbar .status{margin-left:auto}.metrics{padding:13px 8px}.metrics>div{padding:0 8px}.metrics strong{font-size:19px}.metrics small{font-size:9px}.metrics span{font-size:9px}.reaction-strip{flex-wrap:wrap}.reaction-strip>span:last-child{margin-left:0}.scene-legend{gap:9px;font-size:8px}.scene-caption{padding:0 14px;font-size:8px}.zoom-controls{right:8px;bottom:5px}.zoom-controls button{min-width:32px;min-height:32px}.chart-grid{gap:20px}.tab-content{padding:18px}.potential-layout{grid-template-columns:1fr}.model-grid{gap:25px}.presets{gap:7px}.presets button{gap:6px}.presets .chevron{display:none}.presets button>b{width:24px;height:26px;flex-shrink:0}.presets small{line-height:1.5}.analysis-tabs>div{gap:12px}.analysis-tabs [data-tab]{font-size:11px}.data-grid{grid-template-columns:repeat(3,1fr)}}
+@media(pointer:coarse){.segmented button,.topology-options button,.toggle,.zoom-controls button{min-height:44px}.toggle{min-width:72px}.range-label{margin-top:8px}input[type=range]{height:30px}.scene-caption .chip{min-height:36px}.check-row label{min-height:38px}.control-group{padding-top:13px;padding-bottom:13px}}
+@media(max-width:650px){main{padding:20px 12px 0}.topbar{padding:14px 12px}.brand-icon{width:36px;height:36px}.brand h1{font-size:15px}.brand p{font-size:7px}.run-controls{width:100%;justify-content:flex-end}.clock{margin-right:auto}.intro{margin-bottom:19px}.intro h2{font-size:21px;margin-top:9px}.intro p{font-size:11px}.eyebrow{font-size:8px;letter-spacing:1px}.model-badge{display:none}.presets{grid-template-columns:1fr 1fr}.presets button{padding:10px;gap:11px}.presets button>b{width:30px;height:30px}.experiment-note{align-items:flex-start;flex-direction:column;gap:5px;padding:9px 2px;font-size:10px;line-height:1.7}.workspace{grid-template-columns:1fr}.controls{display:grid;grid-template-columns:1fr 1fr;gap:0}.panel-heading{grid-column:1/-1;padding:16px}.controls>.control-group{border-right:1px solid #23313d;border-bottom:1px solid #23313d;min-width:0}.controls>.control-group:last-child{border-right:0;border-bottom:0}.scene-toolbar{flex-wrap:nowrap}.segmented button{font-size:9px;padding:5px 7px}.scene-toolbar .status{font-size:8px}.metrics{padding:18px 10px}.metrics strong{font-size:22px}.scene-caption{height:38px}.scene-legend{font-size:9px;justify-content:center}.reaction-strip{justify-content:center}.scene-footnote{text-align:center;font-size:9px}.scene-wrap{min-height:280px}#scene{min-height:255px}.zoom-controls{bottom:4px}.zoom-controls button{min-height:36px;min-width:31px}.chart-grid,.model-grid,.energy-section{grid-template-columns:1fr}.analysis-tabs{padding:0 11px;gap:0}.analysis-tabs>div{gap:10px}.analysis-tabs [data-tab]{font-size:10px;min-height:52px}.analysis-tabs .text-button{font-size:9px;padding:0 1px}.chart-heading{display:flex}.chart-heading h3{font-size:11px}.chart-heading>div{margin-top:0}.line-key{font-size:8px;margin-left:8px}.data-grid{grid-template-columns:repeat(2,1fr);gap:16px}.potential-toolbar{flex-wrap:wrap}.potential-toolbar .segmented button{font-size:10px}.potential-layout{gap:14px}.probe-panel{padding:17px}.tab-content{padding:16px}.model-grid p{font-size:11px}.reaction-strip b{font-size:12px}.energy-section{gap:20px}footer{flex-direction:column;gap:10px;align-items:flex-start;font-size:8px}.controls .range-label{font-size:9px}.controls .range-label>span:last-child{font-size:10px}.controls .control-group{padding:13px}.controls .concentration-inputs{grid-template-columns:1fr}.controls .label span{display:block;float:none;margin-top:5px}.controls .check-row{gap:7px}.scene-legend .legend-hint{display:none}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+/* V1.1 targeted transport controls; existing layout and visual language retained. */
+#scene .field-label{fill:#78d9e3;font-size:9px;letter-spacing:.1px}#scene .ion-tracer:focus circle{stroke-width:2.5}.transport-controls{padding:14px 21px;background:#11212c;border-top:1px solid #2c424b}.transport-control-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.transport-control-row>label{font-size:11px;color:#a5c5cd;display:flex;align-items:center;gap:5px}.transport-control-row select{width:auto;min-width:150px}.transport-control-row button{min-height:36px;padding:5px 10px;font-size:10px}.transport-control-row .help{font-size:10px;margin:0}.ion-filters{display:flex;gap:17px;align-items:center;flex-wrap:wrap;margin:8px 0}.ion-filters label{display:flex;align-items:center;gap:3px;min-height:34px;font-size:11px}.ion-filters>span{margin-left:auto;font-size:9px;color:#7d9aa9}.transport-disclaimer{font-size:10px;color:#7297a5;line-height:1.8;margin:11px 0 0}.transport-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}.transport-heading h3{margin-top:8px;font-size:18px}.transport-selectors{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:20px;align-items:end;margin-bottom:22px}.transport-selectors label{font-size:11px;color:#91aebb}.transport-selectors select{margin-top:8px}.inspect-position-label output{float:right;color:#9ce2db}.transport-panel-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}.transport-panel-grid article{min-width:0;padding:18px;background:#11212c;border:1px solid #2b414d;border-radius:8px}.transport-panel-grid h3{font-size:14px;margin-bottom:17px}.transport-panel-grid h3 small{display:block;color:#809aaa;font-weight:400;font-size:10px;margin-top:8px}.ion-values{display:grid;grid-template-columns:1fr 1.4fr;gap:13px 10px;font-size:11px}.ion-values dt{color:#7e9dab}.ion-values dd{margin:0;text-align:right;color:#bdd4d9;font:10px ui-monospace,monospace;overflow-wrap:anywhere}.transport-directions{display:grid;gap:12px;margin-top:25px;font-size:11px;color:#b3cad4}.migration-key{color:#91d7be;border-left:3px solid #91d7be;padding-left:9px}.diffusion-key{color:#bca2de;border-left:3px dashed #bca2de;padding-left:9px}#transport-profile svg{display:block;width:100%;height:auto}.gradient-experiment{margin-top:22px;background:#15232f;padding:16px 20px;border-radius:7px;border:1px solid #2c424b}.gradient-experiment input{width:100%;max-width:600px}.gradient-experiment .range-label{max-width:600px}.transport-scope{margin-top:16px;padding:14px 18px;border:1px solid #2c424b;border-radius:7px}.transport-scope a{color:#91d7be}.transport-scope summary{font-size:12px}.analysis-tabs>div{min-width:0;overflow-x:auto;white-space:nowrap}.analysis-tabs [data-tab]{flex-shrink:0}.analysis-tabs>.text-button{flex-shrink:0}
+@media(max-width:850px){.transport-panel-grid{gap:15px}.transport-selectors{gap:10px}.transport-controls{padding:12px 15px}.transport-control-row{gap:8px}.transport-control-row select{min-width:130px;font-size:10px}.analysis-tabs>div{gap:12px}.ion-filters{gap:9px}.transport-panel-grid article{padding:14px}.ion-values{font-size:10px}}
+@media(max-width:650px){.transport-panel-grid{grid-template-columns:1fr}.transport-selectors{grid-template-columns:1fr 1fr}.inspect-position-label{grid-column:1/-1}.transport-heading h3{font-size:15px}.transport-control-row button{min-height:40px}.transport-control-row select{min-height:40px}.ion-filters>span{margin-left:0}.analysis-tabs>div{max-width:calc(100% - 65px)}.transport-disclaimer{font-size:9px}}
+.transport-directions svg{width:100%;max-width:370px;height:90px;display:block}
+
+</style>
+<script>
+(function(){'use strict';
+const __modules={
+"/src/main":function(module,exports,require){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.layers = exports.lab = void 0;
+exports.render = render;
+require("./style.css");
+const lab_1 = require("./model/lab");
+const chemistry_1 = require("./model/chemistry");
+const resistance_1 = require("./model/resistance");
+const scene_1 = require("./view/scene");
+const charts_1 = require("./view/charts");
+const transport_1 = require("./model/transport");
+const transport_panel_1 = require("./view/transport-panel");
+const touch_1 = require("./view/touch");
+exports.lab = new lab_1.Lab();
+exports.layers = { electrons: true, current: true, voltage: true, process: 'all', field: true, fieldMode: 'vectors', ions: [...transport_1.ION_IDS] };
+let activeTab = 'history', potentialMode = 'A', activePreset = '自由实验', probeTarget = 'red';
+const $ = (id) => document.getElementById(id);
+const icon = `<svg viewBox="0 0 28 28" width="28" height="28" fill="none"><path d="M5 8v12M9 5v18M19 8v12M23 5v18M2 14h7m10 0h7M9 10h10m-10 8h10" stroke="currentColor" stroke-width="1.7"/></svg>`;
+const range = (id, label, value, min, max, step, unit = 'Ω') => `<label class="range-label" for="${id}"><span>${label}</span><span><output id="${id}-value">${value.toFixed(2)}</output> <i>${unit}</i></span></label><input id="${id}" type="range" min="${min}" max="${max}" step="${step}" value="${value}">`;
+$('app').innerHTML = `
+<header class="topbar"><div class="brand"><div class="brand-icon">${icon}</div><div><h1>电化学与电路物理联合实验室</h1><p>Electrochemical Battery & Circuit Physics Laboratory</p></div><span class="version">LAB / 1.1</span></div><div class="run-controls"><span class="clock"><span class="live-dot"></span><b id="elapsed">00:00:00</b><small>模拟时间</small></span><button id="reset" class="icon-button" title="按当前参数重置">↺ <span>重置</span></button><button id="run" class="primary">Ⅱ 暂停实验</button></div></header>
+<main><div class="intro"><div><div class="eyebrow">INTERACTIVE SCIENCE LABORATORY</div><h2>从电路，走进化学反应。</h2><p>让每一个电子，都有物理依据。</p></div><div class="model-badge"><span class="live-dot"></span> 丹尼尔原电池 <span>Zn / Cu</span><i>298.15 K</i></div></div>
+<section class="presets" aria-label="教学实验"><button data-preset="A"><b>A</b><span>开路与闭路<small>电动势 ≠ 端电压</small></span><span class="chevron">↗</span></button><button data-preset="B"><b>B</b><span>改变外电阻<small>负载如何影响输出？</small></span><span class="chevron">↗</span></button><button data-preset="C"><b>C</b><span>探索内部损耗<small>能量去了哪里？</small></span><span class="chevron">↗</span></button><button data-preset="D"><b>D</b><span>长时间放电<small>浓度如何改变电动势？</small></span><span class="chevron">↗</span></button></section>
+<div id="experiment-note" class="experiment-note"><b>自由实验</b><span>调节电阻，观察电路与化学反应的同步变化。点击电极，可进入界面。</span><code>I = E / (R + r)</code></div>
+<div class="workspace"><section class="scene-panel panel"><div class="scene-toolbar"><div class="segmented" aria-label="观察尺度"><button data-scale="macro" class="active">01 <span>完整电路</span></button><button data-scale="inside">02 <span>电池剖面</span></button><button data-scale="micro">03 <span>电极界面</span></button></div><span id="status" class="status">● 放电中</span></div>
+<div class="metrics"><div><span>电动势 <i>E</i></span><strong id="metric-e">1.100 <small>V</small></strong></div><div><span>端电压 <i>U</i></span><strong id="metric-u" class="mint">0.880 <small>V</small></strong></div><div><span>电流 <i>I</i></span><strong id="metric-i">0.110 <small>A</small></strong></div><div><span>负载功率 <i>P</i></span><strong id="metric-p">0.0968 <small>W</small></strong></div></div>
+<div class="scene-wrap"><div class="scene-caption"><span id="scale-caption">宏观视角 / DC QUASI-STEADY</span><span id="micro-select" hidden><button data-electrode="zn" class="chip active">Zn 锌</button><button data-electrode="cu" class="chip">Cu 铜</button></span></div><svg id="scene" viewBox="0 0 900 570" role="img" aria-label="可交互的锌铜原电池实验场景"></svg><div class="zoom-controls"><button id="back-scale" title="返回上一尺度">↶</button><button id="zoom-out" title="缩小视图">−</button><output id="zoom-value">100%</output><button id="zoom-in" title="放大视图">＋</button><button id="zoom-reset" title="复位视图">⌖</button><button id="deeper" title="进入下一观察尺度">深入 ↗</button></div></div>
+<div class="scene-legend"><span><i class="dot zinc"></i>Zn / Zn²⁺</span><span><i class="dot copper"></i>Cu / Cu²⁺</span><span><i class="dot electron"></i>电子 e⁻</span><span><i class="dot purple-bg"></i>NO₃⁻</span><span><i class="dot gold-bg"></i>K⁺</span><span class="legend-hint">拖动平移 · 双指缩放</span></div>
+<div class="reaction-strip"><span>净反应</span><b>Zn(s) + Cu²⁺(aq) → Zn²⁺(aq) + Cu(s)</b><span id="reaction-rate">0.570 μmol/s</span></div><div class="scene-footnote" id="sampling-note"></div><div class="transport-controls"><div class="transport-control-row"><label><input type="checkbox" id="field" checked> 电场图层</label><select id="field-mode" aria-label="电场显示模式"><option value="vectors">一维电场矢量</option><option value="strength">一维强度色带 + 方向</option><option disabled>二维场线（未求解）</option></select><button id="focus-bridge" class="chip">盐桥放大 ⊕</button><button id="open-transport" class="chip">输运数据 ↗</button></div><div class="ion-filters" aria-label="离子筛选">${transport_1.ION_IDS.map(id => `<label style="color:${transport_1.IONS[id].color}"><input type="checkbox" data-ion-filter="${id}" checked>${transport_1.IONS[id].label}</label>`).join('')}<span>点击粒子查看通量</span></div><div class="transport-control-row"><label for="visual-gain">离子示踪播放倍率</label><select id="visual-gain"><option value="10000">10,000 ×</option><option value="40000" selected>40,000 ×</option><option value="100000">100,000 ×</option></select><span class="help">独立于物理时间；不改 I、ξ 或通量</span></div><p class="transport-disclaimer">青色：已求解的一维体相场矢量；弯管仅映射通道坐标，非二维场线。粒子为群平均示踪，热噪声按 256 粒子均值抽样；理想导线取 𝓔=0，界面场未求解。</p></div></section>
+<aside class="panel controls"><div class="panel-heading"><h3>实验控制</h3><span>PARAMETERS</span></div><div class="control-group"><div class="switch-row"><span>外电路开关</span><button id="switch" class="toggle on" aria-pressed="true"><span></span><b>闭合</b></button></div><label class="label" for="topology">负载连接方式</label><div class="topology-options"><button data-topology="single" class="active">单电阻</button><button data-topology="series">串联</button><button data-topology="parallel">并联</button></div>${range('r1', '负载电阻 R₁', 8, .1, 40, .1)}<div id="r2-control" hidden>${range('r2', '负载电阻 R₂', 8, .1, 40, .1)}</div><div class="subtle-row"><span>等效外电阻 R</span><b id="equivalent-r">8.00 Ω</b></div><div id="branch-data" class="branch-data" hidden></div></div>
+<div class="control-group"><div class="group-title"><h4>内部欧姆电阻</h4><strong id="internal-r">2.00 <small>Ω</small></strong></div><div id="resistance-bar" class="resistance-bar"></div>${resistance_1.resistanceNames.map((name, i) => range(`internal-${i}`, name, exports.lab.params.internal[i], 0, 10, .05)).join('')}<div class="subtle-row"><span>内部压降 Ir</span><b id="loss-value">0.220 V</b></div></div>
+<div class="control-group"><label class="label" for="speed">模拟时间倍率 <span>不改变瞬时电流</span></label><select id="speed">${[1, 10, 100, 1000, 5000, 10000].map(v => `<option value="${v}">${v.toLocaleString()} × ${v === 1 ? '真实时间' : ''}</option>`).join('')}</select><label class="label" for="process">观察过程</label><select id="process"><option value="all">全部过程叠加</option><option value="electron">电子传导</option><option value="ion">离子传导</option><option value="reaction">界面化学反应</option><option value="resistance">电阻与欧姆压降</option></select><div class="check-row"><label><input type="checkbox" id="electrons" checked>电子</label><label><input type="checkbox" id="current" checked>电流方向</label><label><input type="checkbox" id="voltage" checked>电压</label></div></div>
+<details class="control-group"><summary>初始条件与盐桥 <span>＋</span></summary><p class="help">应用浓度会建立新实验并清空历史。两侧体积各 0.10 L。</p><div class="concentration-inputs"><label>Zn²⁺ (mol/L)<input type="number" id="zn0" min="0.01" max="2" step="0.01" value="1"></label><label>Cu²⁺ (mol/L)<input type="number" id="cu0" min="0.01" max="2" step="0.01" value="1"></label></div><button id="apply-initial" class="secondary full">应用初始浓度并重置</button><p id="initial-error" class="error" role="alert"></p><div class="switch-row"><span>KNO₃ 盐桥连通</span><button id="bridge" class="toggle on" aria-pressed="true"><span></span><b>连通</b></button></div><p class="help">盐桥中断仅作定性教学，忽略充电瞬态，端电压不作定量预测。</p></details></aside></div>
+<div id="notice" role="status" class="notice" hidden></div>
+<section class="analysis panel"><div class="analysis-tabs"><div role="tablist"><button data-tab="history" class="active" role="tab" aria-selected="true">时间曲线</button><button data-tab="potential" role="tab" aria-selected="false">电势与探针</button><button data-tab="data" role="tab" aria-selected="false">数据与能量</button><button data-tab="transport" role="tab" aria-selected="false">离子与场</button><button data-tab="model" role="tab" aria-selected="false">模型说明</button></div><button id="export" class="text-button">↓ 导出 CSV</button></div>
+<div id="tab-history" class="tab-content"><div class="chart-grid"><article><div class="chart-heading"><h3>电压随时间变化 <small>V</small></h3><div><span class="line-key lavender">E 电动势</span><span class="line-key mint">U 端电压</span></div></div><div id="voltage-chart"></div></article><article><div class="chart-heading"><h3>溶液离子浓度 <small>mol/L</small></h3><div><span class="line-key zinc-text">Zn²⁺</span><span class="line-key blue">Cu²⁺</span></div></div><div id="concentration-chart"></div></article><article><div class="chart-heading"><h3>电流随时间变化 <small>A</small></h3><span class="line-key gold">I 总电流</span></div><div id="current-chart"></div></article><article class="insight"><div class="eyebrow">ONE REACTION, ONE STATE</div><h3>化学变化，决定电路输出。</h3><p>随着放电，Zn²⁺ 增多、Cu²⁺ 减少，反应商 Q 上升，电动势缓慢下降。时间倍率只加速这个演化过程。</p><div class="equation">E = E° − <span>RT / 2F</span> · ln([Zn²⁺] / [Cu²⁺])</div><small>曲线与所有仪表共用模型快照；历史超过 900 点时均匀抽稀，保留起点与最新点。</small></article></div></div>
+<div id="tab-potential" class="tab-content" hidden><div class="potential-toolbar"><div class="segmented"><button data-potential="A" class="active">A · 等效回路电压</button><button data-potential="B">B · 内部现象示意</button></div><label id="branch-choice" hidden>回路支路 <select id="loop-branch"><option value="0">R₁ 支路</option><option value="1">R₂ 支路</option></select></label></div><div class="potential-layout"><article><div id="potential-chart"></div><p id="potential-explanation" class="help"></p></article><article class="probe-panel"><div class="eyebrow">VIRTUAL VOLTMETER</div><h3>节点电势测量</h3><div class="probe-inputs"><label class="red">红探针 ＋<select id="probe-red"><option value="p">P · 电池正极</option><option value="n">N · 电池负极</option><option value="a">A · 开关负载侧</option><option value="m">M · 串联中点</option></select></label><label class="blue">黑探针 −<select id="probe-black"><option value="n">N · 电池负极</option><option value="p">P · 电池正极</option><option value="a">A · 开关负载侧</option><option value="m">M · 串联中点</option></select></label></div><div class="probe-readout"><span id="probe-value">0.8800</span> <small>V</small></div><div class="check-row"><label><input type="radio" name="probe-target" value="red" checked>点击放红探针</label><label><input type="radio" name="probe-target" value="black">点击放黑探针</label></div><p class="help">参考节点 N = 0 V。点击完整电路中的节点可放置探针；M 仅用于串联。读数为 φ红 − φ黑，只对已求解外电路节点有效。</p></article></div></div>
+<div id="tab-data" class="tab-content" hidden><div id="data-grid" class="data-grid"></div><div class="energy-section"><div><h3>功率去向</h3><div id="energy-bar" class="energy-bar"></div><p id="power-equation" class="equation"></p><p class="help">EI 是本模型中反应吉布斯自由能提供的可用功率，不是反应总焓释放率。</p></div><div id="checks" class="checks"></div></div></div>
+<div id="tab-transport" class="tab-content" hidden>${(0, transport_panel_1.transportPanelHTML)()}</div>
+<div id="tab-model" class="tab-content" hidden><div class="model-grid"><article><div class="eyebrow">01 / ELECTROCHEMISTRY</div><h3>一个反应进度 ξ</h3><p>Zn 消耗、Zn²⁺ 增加、Cu²⁺ 消耗和 Cu 沉积的摩尔量均等于 ξ。ξ̇ = I / (2F)，转移电子物质的量为 2ξ。浓度按固定体积 0.10 L 换算。初始锌 0.15 mol，铜 0.10 mol。</p><code>Q = (cZn / c°) / (cCu / c°)；c° = 1 mol/L</code><p>恒温 298.15 K，均匀混合、体积不变，纯金属活度为 1。以浓度代替活度是理想溶液近似；真实 1 mol/L 电解质有显著非理想性，本软件不代表精密实验预测。</p></article><article><div class="eyebrow">02 / CIRCUIT</div><h3>从同一网络求解电流与电压</h3><p>直流准稳态、理想导线、理想开关与测量表；外部只有纯电阻。四项欧姆内阻相加。并联支路各有独立的 I、U 和功率；串联中点按元件压降计算。</p><code>E = U + Ir；U = IR；EI = I²R + I²r</code><p>开路时 I = 0、U = E，电压落在开关断口。暂停冻结演化，但仍显示当前准稳态预测电流。真实损失还含电极动力学与传质极化，本版未计算这些损失。</p></article><article><div class="eyebrow">03 / VISUALIZATION</div><h3>示意与计算分开标注</h3><p>粒子数、晶格间距、移动速度及电极绘图宽度用于抽样说明，不代表真实空间和粒子尺度。界面事件与电子相位仍从 ξ 导出；离子由独立的一维 Nernst–Planck 输出驱动，其播放倍率不回写物理模型。随机热扰动按粒子群均值抽样。默认零浓差放电时，盐桥内 NO₃⁻ 向阳极、K⁺ 向阴极；施加储库浓差后以求解净通量为准。电子只在金属与外电路中出现。</p><p>新增一维、电中性、无对流迁移扩散近似；未求解二维/三维浓度场、泊松方程或完整电双层。详细库存闭合与储库边界见“离子与场”。电化学势包含化学势与电势能项；电动势是单位电荷的可用化学功，不能直接当作内部空间静电势分布。</p></article><article><div class="eyebrow">04 / NUMERICAL BOUNDARIES</div><h3>稳定推进，明确停止</h3><p>自适应显式中点积分：单步最多 60 模拟秒，且反应量不超过相关剩余库存的 0.5%。Cu²⁺ 达到 max(10⁻⁶ mol/L, 初始值的 0.01%)，或锌剩余初始量的百万分之一时停止。</p><p>保护边界仅为数值有效域，不是精确的电池寿命或传质极限。高倍率时动画会抽样混叠，以数值与积分结果为准。后台隐藏时自动暂停，恢复后手动继续；不补算离线时间。</p><a href="https://openstax.org/books/chemistry-2e/pages/17-4-potential-free-energy-and-equilibrium" target="_blank" rel="noreferrer">参考：OpenStax · 电势、自由能与能斯特方程 ↗</a></article></div></div>
+</section><footer><span class="footer-mark">${icon} ELECTROCHEMISTRY × CIRCUIT PHYSICS</span><span>基于数学模型 · 理想溶液近似 · 仅用于教学探索</span></footer></main>`;
+const svg = $('scene');
+const viewport = new touch_1.Viewport(svg, () => { $('zoom-value').textContent = `${Math.round(viewport.zoom * 100)}%`; });
+function setScale(scale) { exports.lab.scale = scale; viewport.reset(); render(); }
+function setElectrode(which) { exports.lab.electrode = which; setScale('micro'); }
+function syncControls() { const p = exports.lab.params; $('bridge-gradient').value = String(exports.lab.transportOptions.bridgeGradient); ['r1', 'r2', 'speed', 'zn0', 'cu0'].forEach(id => { $(id).value = String(p[id]); }); p.internal.forEach((v, i) => { $(`internal-${i}`).value = String(v); }); render(); }
+const plans = { A: ['开路与闭路', '点击开关闭合，再断开；比较开路电动势、负载端电压与电流。', '开路 I = 0，U = E；闭路 U = E − Ir'], B: ['改变外电阻', '缓慢增大 R₁；观察电流减小、内部压降降低、端电压趋近 E。', 'I = E / (R + r)；U = ER / (R + r)'], C: ['探索内部损耗', '当前盐桥电阻已提高；调节四项内阻，比较外部电功率与内部热损耗。', 'P内 = I²r；P外 = I²R'], D: ['长时间放电', '以 5000× 推进，观察 Cu²⁺ 消耗与 E 下降；到保护边界后停止预测。', 'dξ/dt = I / (2F)；E = E° − RT/(2F) ln Q'] };
+$('run').onclick = () => { if (exports.lab.state.stopped)
+    return; exports.lab.running = !exports.lab.running; render(); };
+$('reset').onclick = () => { exports.lab.reset(); exports.lab.running = true; render(); };
+function flipSwitch() { exports.lab.update({ closed: !exports.lab.params.closed }); render(); }
+$('switch').onclick = flipSwitch;
+$('bridge').onclick = () => { exports.lab.update({ bridge: !exports.lab.params.bridge }); render(); };
+document.querySelectorAll('[data-preset]').forEach(b => b.onclick = () => { const id = b.dataset.preset; exports.lab.preset(id); activePreset = id; const [name, goal, formula] = plans[id]; $('experiment-note').innerHTML = `<b>实验 ${id} · ${name}</b><span>${goal}</span><code>${formula}</code>`; syncControls(); });
+document.querySelectorAll('[data-scale]').forEach(b => b.onclick = () => setScale(b.dataset.scale));
+document.querySelectorAll('[data-topology]').forEach(b => b.onclick = () => { exports.lab.update({ topology: b.dataset.topology }); render(); });
+document.querySelectorAll('#micro-select [data-electrode]').forEach(b => b.onclick = () => setElectrode(b.dataset.electrode));
+for (const id of ['r1', 'r2'])
+    $(id).oninput = e => { exports.lab.update({ [id]: Number(e.target.value) }); render(); };
+for (let i = 0; i < 4; i++)
+    $(`internal-${i}`).oninput = e => { const internal = [...exports.lab.params.internal]; internal[i] = Number(e.target.value); exports.lab.update({ internal }); render(); };
+$('speed').onchange = e => { exports.lab.update({ speed: Number(e.target.value) }); render(); };
+$('process').onchange = e => { exports.layers.process = e.target.value; render(); };
+for (const id of ['electrons', 'current', 'voltage'])
+    $(id).onchange = e => { exports.layers[id] = e.target.checked; render(); };
+$('apply-initial').onclick = () => { const zn = Number($('zn0').value), cu = Number($('cu0').value); if (!Number.isFinite(zn) || !Number.isFinite(cu) || zn < .01 || cu < .01 || zn > 2 || cu > 2) {
+    $('initial-error').textContent = '请输入 0.01–2.00 mol/L 范围内的有效浓度。';
+    return;
+} $('initial-error').textContent = ''; exports.lab.reset(); exports.lab.update({ zn0: zn, cu0: cu }); exports.lab.reset(); exports.lab.running = true; render(); };
+$('zoom-in').onclick = () => viewport.setZoom(viewport.zoom * 1.2);
+$('zoom-out').onclick = () => viewport.setZoom(viewport.zoom / 1.2);
+$('zoom-reset').onclick = () => viewport.reset();
+$('deeper').onclick = () => setScale(exports.lab.scale === 'macro' ? 'inside' : 'micro');
+$('back-scale').onclick = () => setScale(exports.lab.scale === 'micro' ? 'inside' : 'macro');
+function focusBridge() { setScale('inside'); viewport.zoom = 1.7; viewport.x = 0; viewport.y = 135; viewport.apply(); $('inspect-region').value = 'bridge'; showTab('transport'); }
+$('focus-bridge').onclick = focusBridge;
+$('open-transport').onclick = () => showTab('transport');
+$('field').onchange = e => { exports.layers.field = e.target.checked; render(); };
+$('field-mode').onchange = e => { exports.layers.fieldMode = e.target.value; render(); };
+$('visual-gain').onchange = e => { exports.lab.visualGain = Number(e.target.value); render(); };
+document.querySelectorAll('[data-ion-filter]').forEach(e => e.onchange = () => { exports.layers.ions = Array.from(document.querySelectorAll('[data-ion-filter]:checked')).map(el => el.dataset.ionFilter); render(); });
+for (const id of ['inspect-region', 'inspect-ion'])
+    $(id).onchange = renderAnalysis;
+$('inspect-position').oninput = renderAnalysis;
+$('bridge-gradient').oninput = e => { exports.lab.updateTransport({ bridgeGradient: Number(e.target.value) }); render(); };
+$('export-transport').onclick = () => { const rows = ['region,s_m,ion,c_mol_m3,D_m2_s,z,gradient_mol_m4,E_V_m,Jdiff_mol_m2_s,Jmig_mol_m2_s,Jtotal_mol_m2_s,current_A,area_m2,status']; for (const r of exports.lab.transport().regions)
+    r.cells.forEach((cell, i) => { for (const key of transport_1.ION_IDS) {
+        const f = cell.ions[key], ok = r.field.status === 'solved';
+        rows.push([r.id, cell.s, key, r.field.status === 'disconnected' ? '' : f.c, transport_1.IONS[key].D, transport_1.IONS[key].z, r.field.status === 'disconnected' ? '' : f.gradient, ok ? r.field.E[i] : '', ok ? f.diffusion : '', ok ? f.migration : '', ok ? f.total : '', cell.current ?? '', r.field.area ?? '', r.field.status].join(','));
+    } }); downloadCSV('electrochemical-transport.csv', rows.join('\n')); };
+function downloadCSV(name, body) { const url = URL.createObjectURL(new Blob(['\uFEFF' + body], { type: 'text/csv;charset=utf-8' })); const a = document.createElement('a'); a.href = url; a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); }
+function sceneAction(target) { const ion = target.closest('[data-ion]'); if (ion) {
+    $('inspect-region').value = ion.dataset.region;
+    $('inspect-ion').value = ion.dataset.ion;
+    $('inspect-position').value = ion.dataset.position;
+    showTab('transport');
+    return;
+} if (target.closest('[data-bridge]')) {
+    focusBridge();
+    return;
+} const electrode = target.closest('[data-electrode]'); if (electrode) {
+    setElectrode(electrode.dataset.electrode);
+    return;
+} if (target.closest('[data-action="switch"]')) {
+    flipSwitch();
+    return;
+} const node = target.closest('[data-node]'); if (node) {
+    $(`probe-${probeTarget}`).value = node.dataset.node;
+    showTab('potential');
+    render();
+    return;
+} if (target.closest('[data-inside]') && exports.lab.scale === 'macro')
+    setScale('inside'); }
+svg.addEventListener('click', e => sceneAction(e.target));
+svg.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    sceneAction(e.target);
+} });
+function showTab(id) { activeTab = id; document.querySelectorAll('.tab-content').forEach(e => e.hidden = e.id !== `tab-${id}`); document.querySelectorAll('[data-tab]').forEach(b => { b.classList.toggle('active', b.dataset.tab === id); b.setAttribute('aria-selected', String(b.dataset.tab === id)); }); renderAnalysis(); }
+document.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => showTab(b.dataset.tab));
+document.querySelectorAll('[data-potential]').forEach(b => b.onclick = () => { potentialMode = b.dataset.potential; renderAnalysis(); });
+for (const id of ['probe-red', 'probe-black', 'loop-branch'])
+    $(id).onchange = renderAnalysis;
+document.querySelectorAll('[name="probe-target"]').forEach(i => i.onchange = () => { probeTarget = i.value; });
+$('export').onclick = () => { const header = 'time_s,E_V,U_V,I_A,Zn_mol_L,Cu_mol_L,xi_mol,R_ohm,r_ohm,P_external_W,P_internal_W,P_source_W,energy_external_J,field_anode_V_m,field_bridge_V_m,field_cathode_V_m,transport_current_error_A'; const rows = exports.lab.history.map(s => [s.time, s.circuit.E, s.circuit.U ?? '', s.circuit.I, s.chemistry.zn, s.chemistry.cu, s.xi, s.circuit.R, s.circuit.r, s.circuit.externalPower, s.circuit.internalPower, s.circuit.sourcePower, s.externalEnergy, ...s.transport.fields.map(v => v ?? ''), s.transport.currentError].join(',')); const url = URL.createObjectURL(new Blob(['\uFEFF' + header + '\n' + rows.join('\n')], { type: 'text/csv;charset=utf-8' })); const a = document.createElement('a'); a.href = url; a.download = 'electrochemical-lab.csv'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); };
+function drawProbes() {
+    svg.querySelectorAll('.probe-marker').forEach(e => e.remove());
+    if (activeTab !== 'potential' || exports.lab.scale !== 'macro')
+        return;
+    for (const color of ['red', 'black']) {
+        const id = $(`probe-${color}`).value;
+        const node = svg.querySelector(`[data-node="${id}"] circle`);
+        if (!node)
+            continue;
+        const x = Number(node.getAttribute('cx')), y = Number(node.getAttribute('cy'));
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.setAttribute('class', 'probe-marker');
+        g.setAttribute('pointer-events', 'none');
+        const tint = color === 'red' ? '#efa899' : '#99b5ed';
+        g.innerHTML = `<circle cx="${x}" cy="${y}" r="10" stroke="${tint}" fill="none" stroke-width="2"/><path d="M${x} ${y + 10} v20" stroke="${tint}" stroke-width="2"/><text x="${x}" y="${y + 42}" fill="${tint}" font-size="13" text-anchor="middle">${color === 'red' ? '+' : '−'}</text>`;
+        svg.querySelector('#world')?.append(g);
+    }
+}
+function renderAnalysis() {
+    const { circuit: c, chemistry: ch } = exports.lab.snapshot(), s = exports.lab.state, p = exports.lab.params;
+    drawProbes();
+    if (activeTab === 'transport') {
+        const region = $('inspect-region').value, ion = $('inspect-ion').value, position = Number($('inspect-position').value);
+        const content = (0, transport_panel_1.renderTransportPanel)(exports.lab, region, ion, position);
+        $('ion-inspector').innerHTML = content.inspector;
+        $('transport-directions').innerHTML = content.directions;
+        $('transport-calibration').innerHTML = content.calibration;
+        $('transport-profile').innerHTML = (0, transport_panel_1.fieldProfile)(exports.lab);
+        $('inspect-position-value').textContent = position.toFixed(2);
+        $('bridge-gradient-value').textContent = exports.lab.transportOptions.bridgeGradient.toFixed(2);
+        const g = exports.lab.params.bridge ? exports.lab.transportOptions.bridgeGradient : 0;
+        $('gradient-boundaries').textContent = `左端 ${((1 - g) * 1).toFixed(2)} mol/L；右端 ${(1 + g).toFixed(2)} mol/L；各离子均值 1.00 mol/L。${exports.lab.params.bridge ? '' : '盐桥已中断，梯度实验暂停。'}`;
+    }
+    if (activeTab === 'history') {
+        for (const kind of ['voltage', 'current', 'concentration'])
+            $(`${kind}-chart`).innerHTML = (0, charts_1.plot)(exports.lab, kind);
+    }
+    if (activeTab === 'potential') {
+        $('branch-choice').hidden = p.topology !== 'parallel' || potentialMode !== 'A';
+        document.querySelectorAll('[data-potential]').forEach(b => b.classList.toggle('active', b.dataset.potential === potentialMode));
+        $('potential-chart').innerHTML = potentialMode === 'A' ? (0, charts_1.potential)(exports.lab, Number($('loop-branch').value)) : (0, charts_1.phenomenon)();
+        $('potential-explanation').textContent = potentialMode === 'A' ? '沿 N → 等效源 → 内阻 → P → 负载 → N。纵轴表示电路等效电压和单位电荷能量，横轴是回路元件顺序，不是真实空间坐标。满足 E − Ir − ΣIR = 0；开路时电压落在断口。' : '仅表示金属近似等势、界面存在电势变化、离子导体内存在欧姆梯度。界面跃迁的方向和相对幅度只是示意，不对应丹尼尔电池的已求解剖面。参考零点可任意选取；未计算局部电场、电双层宽度或绝对界面电势。';
+        for (const id of ['probe-red', 'probe-black']) {
+            const select = $(id);
+            select.querySelector('[value="m"]').disabled = p.topology !== 'series';
+            if (select.value === 'm' && p.topology !== 'series')
+                select.value = id === 'probe-red' ? 'p' : 'n';
+        }
+        $('probe-value').textContent = (0, charts_1.probeValue)(exports.lab, $('probe-red').value, $('probe-black').value);
+    }
+    if (activeTab === 'data') {
+        const data = [['电动势 E', c.E, 'V', 4], ['端电压 U', c.U, 'V', 4], ['欧姆压降 Ir', c.loss, 'V', 4], ['总电流 I', c.I, 'A', 5], ['等效外电阻 R', c.R, 'Ω', 3], ['总欧姆内阻 r', c.r, 'Ω', 3], ['外部功率 I²R', c.externalPower, 'W', 5], ['内部损耗 I²r', c.internalPower, 'W', 5], ['源功率 EI', c.sourcePower, 'W', 5], ['Zn²⁺ 浓度', ch.zn, 'mol/L', 6], ['Cu²⁺ 浓度', ch.cu, 'mol/L', 6], ['累计反应 ξ', s.xi, 'mol', 7], ['Zn 剩余质量', ch.znMass, 'g', 5], ['Cu 电极总质量', ch.cuMass, 'g', 5], ['累计输出电能', s.externalEnergy, 'J', 4], ['累计内部耗能', s.internalEnergy, 'J', 4], ['累计源能量', s.sourceEnergy, 'J', 4], ['转移电荷 2Fξ', s.charge, 'C', 4]];
+        $('data-grid').innerHTML = data.map(([name, v, unit, d]) => `<div><span>${name}</span><strong>${(0, scene_1.fmt)(v, d)} <small>${unit}</small></strong></div>`).join('');
+        const external = c.sourcePower ? c.externalPower / c.sourcePower * 100 : 0;
+        $('energy-bar').innerHTML = `<span style="width:${external}%">负载 ${(0, scene_1.fmt)(external, 1)}%</span><span style="width:${c.sourcePower ? 100 - external : 0}%">内损 ${(0, scene_1.fmt)(c.sourcePower ? 100 - external : 0, 1)}%</span>`;
+        $('power-equation').textContent = `${(0, scene_1.fmt)(c.sourcePower, 5)} W = ${(0, scene_1.fmt)(c.externalPower, 5)} W + ${(0, scene_1.fmt)(c.internalPower, 5)} W`;
+        $('checks').innerHTML = `<h3>实时模型校验</h3><p>✓ 功率残差 |EI − I²R − I²r| = ${Math.abs(c.sourcePower - c.externalPower - c.internalPower).toExponential(1)} W</p><p>✓ 电子计量残差 |q − 2Fξ| = ${Math.abs(s.charge - 2 * chemistry_1.F * s.xi).toExponential(1)} C</p><p>✓ Zn 元素总量 = ${(0, scene_1.fmt)(ch.znMetal + ch.zn * p.volume, 6)} mol</p><p>✓ Cu 元素总量 = ${(0, scene_1.fmt)(ch.cuMetal + ch.cu * p.volume, 6)} mol</p>`;
+    }
+}
+function render() {
+    const { circuit: c, chemistry: ch } = exports.lab.snapshot(), p = exports.lab.params;
+    $('metric-e').innerHTML = `${(0, scene_1.fmt)(c.E)} <small>V</small>`;
+    $('metric-u').innerHTML = `${(0, scene_1.fmt)(c.U)} <small>V</small>`;
+    $('metric-i').innerHTML = `${(0, scene_1.fmt)(c.I)} <small>A</small>`;
+    $('metric-p').innerHTML = `${(0, scene_1.fmt)(c.externalPower, 4)} <small>W</small>`;
+    const sec = Math.floor(exports.lab.state.time);
+    $('elapsed').textContent = `${String(Math.floor(sec / 3600)).padStart(2, '0')}:${String(Math.floor(sec / 60) % 60).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`;
+    $('run').textContent = exports.lab.state.stopped ? '已停止预测' : exports.lab.running ? 'Ⅱ 暂停实验' : '▶ 继续实验';
+    $('run').disabled = !!exports.lab.state.stopped;
+    $('status').textContent = exports.lab.state.stopped ? '● 模型边界' : !exports.lab.running ? '● 已暂停' : !p.bridge ? '● 盐桥中断' : !p.closed ? '○ 开路' : '● 放电中';
+    $('status').classList.toggle('inactive', !exports.lab.running || !p.closed || !p.bridge);
+    for (const [id, on, yes, no] of [['switch', p.closed, '闭合', '断开'], ['bridge', p.bridge, '连通', '中断']]) {
+        $(id).classList.toggle('on', on);
+        $(id).setAttribute('aria-pressed', String(on));
+        $(id).querySelector('b').textContent = on ? yes : no;
+    }
+    $('r2-control').hidden = p.topology === 'single';
+    $('branch-data').hidden = p.topology === 'single';
+    $('branch-data').innerHTML = c.branches.map((b, i) => `<span>R${i + 1} <b>${(0, scene_1.fmt)(b.I)} A</b> · ${(0, scene_1.fmt)(b.U)} V · ${(0, scene_1.fmt)(b.I * b.U, 4)} W</span>`).join('');
+    $('equivalent-r').textContent = `${(0, scene_1.fmt)(c.R, 2)} Ω`;
+    $('internal-r').innerHTML = `${(0, scene_1.fmt)(c.r, 2)} <small>Ω</small>`;
+    $('loss-value').textContent = `${(0, scene_1.fmt)(c.loss)} V`;
+    ['r1', 'r2'].forEach(id => $(`${id}-value`).textContent = (0, scene_1.fmt)(p[id], 2));
+    p.internal.forEach((r, i) => { $(`internal-${i}-value`).textContent = (0, scene_1.fmt)(r, 2); });
+    $('resistance-bar').innerHTML = p.internal.map((r, i) => `<span title="${resistance_1.resistanceNames[i]} ${(0, scene_1.fmt)(r, 2)} Ω" style="width:${c.r ? r / c.r * 100 : 0}%;background:${['#8195ac', '#718e99', '#7bb7a5', '#648ba7'][i]}"></span>`).join('');
+    document.querySelectorAll('[data-scale]').forEach(b => b.classList.toggle('active', b.dataset.scale === exports.lab.scale));
+    document.querySelectorAll('[data-topology]').forEach(b => b.classList.toggle('active', b.dataset.topology === p.topology));
+    document.querySelectorAll('[data-preset]').forEach(b => b.classList.toggle('active', b.dataset.preset === activePreset));
+    document.querySelectorAll('#micro-select [data-electrode]').forEach(b => b.classList.toggle('active', b.dataset.electrode === exports.lab.electrode));
+    $('micro-select').hidden = exports.lab.scale !== 'micro';
+    $('scale-caption').textContent = exports.lab.scale === 'macro' ? '宏观视角 / DC QUASI-STEADY' : exports.lab.scale === 'inside' ? '内部剖面 / CHARGE TRANSPORT' : '微观界面 / SAMPLED REACTION';
+    $('deeper').hidden = exports.lab.scale === 'micro';
+    $('back-scale').hidden = exports.lab.scale === 'macro';
+    if (!viewport.interacting) {
+        svg.innerHTML = (0, scene_1.scene)(exports.lab, exports.layers);
+        viewport.apply();
+    }
+    $('reaction-rate').textContent = `${(0, scene_1.fmt)(c.I / (2 * chemistry_1.F) * 1e6)} μmol/s`;
+    $('sampling-note').textContent = `Zn/Cu 反应与电子仍由 ξ 驱动；离子示踪由 J迁移 + J扩散及 D 驱动。物理时间 ${p.speed}×，离子播放 ${exports.lab.visualGain.toLocaleString()}×。暂停冻结两者，开路不消除热运动。`;
+    const notice = exports.lab.state.stopped || (!p.bridge ? '盐桥已中断：不再维持持续离子电流。本模式忽略瞬态；端电压及相关节点电势不作预测。' : ch.cu < .01 ? 'Cu²⁺ 浓度很低，真实电池可能已有明显传质极化；当前数值仍属于理想模型。' : '');
+    $('notice').hidden = !notice;
+    $('notice').textContent = notice;
+    renderAnalysis();
+}
+render();
+let previous = performance.now(), accum = 0;
+function frame(now) { const dt = Math.min((now - previous) / 1000, .25); previous = now; accum += dt; if (accum >= .1) {
+    if (exports.lab.running) {
+        exports.lab.tick(accum);
+        render();
+    }
+    accum = 0;
+} requestAnimationFrame(frame); }
+requestAnimationFrame(frame);
+document.addEventListener('visibilitychange', () => { previous = performance.now(); accum = 0; if (document.hidden) {
+    exports.lab.running = false;
+    render();
+} });
+
+},
+"/src/model/chemistry":function(module,exports,require){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.initialState = exports.defaults = exports.MOLAR_CU = exports.MOLAR_ZN = exports.GAS = exports.F = void 0;
+exports.capacity = capacity;
+exports.chemistry = chemistry;
+exports.validateParams = validateParams;
+exports.F = 96485.33212, exports.GAS = 8.314462618;
+exports.MOLAR_ZN = 65.38, exports.MOLAR_CU = 63.546;
+const defaults = () => ({ temperature: 298.15, e0: 1.10, zn0: 1, cu0: 1, volume: .10, znMetal0: .15, cuMetal0: .10, r1: 8, r2: 8, internal: [.1, .45, 1, .45], topology: 'single', closed: true, bridge: true, speed: 1 });
+exports.defaults = defaults;
+const initialState = () => ({ time: 0, xi: 0, charge: 0, externalEnergy: 0, internalEnergy: 0, sourceEnergy: 0, stopped: null });
+exports.initialState = initialState;
+// Stop well before the singularity. This is a numerical boundary, not a predictive transport criterion.
+function capacity(p) { return Math.min(p.znMetal0 * (1 - 1e-6), p.cu0 * p.volume - Math.max(1e-6, p.cu0 * 1e-4) * p.volume); }
+function chemistry(p, s) {
+    const zn = p.zn0 + s.xi / p.volume, cu = p.cu0 - s.xi / p.volume;
+    if (!(zn > 0 && cu > 0 && s.xi >= 0 && s.xi <= capacity(p) + 1e-12))
+        throw new Error('反应库存超出有效范围');
+    const znMetal = p.znMetal0 - s.xi, cuMetal = p.cuMetal0 + s.xi;
+    return { zn, cu, znMetal, cuMetal, znMass: znMetal * exports.MOLAR_ZN, cuMass: cuMetal * exports.MOLAR_CU, E: p.e0 - exports.GAS * p.temperature / (2 * exports.F) * Math.log(zn / cu) };
+}
+function validateParams(p) {
+    const positive = [p.temperature, p.e0, p.zn0, p.cu0, p.volume, p.znMetal0, p.cuMetal0, p.r1, p.r2, p.speed];
+    if (positive.some(v => !Number.isFinite(v) || v <= 0) || p.internal.some(v => !Number.isFinite(v) || v < 0))
+        throw new Error('参数必须是有效正数；内阻分量可为零');
+    if (!['single', 'series', 'parallel'].includes(p.topology))
+        throw new Error('无效连接方式');
+}
+
+},
+"/src/model/circuit":function(module,exports,require){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.solve = solve;
+exports.probe = probe;
+exports.loopValues = loopValues;
+const chemistry_1 = require("./chemistry");
+const resistance_1 = require("./resistance");
+function solve(p, s) {
+    const { E } = (0, chemistry_1.chemistry)(p, s), R = (0, resistance_1.externalResistance)(p), r = (0, resistance_1.totalInternal)(p);
+    const valid = p.bridge && !s.stopped && E > 0;
+    const I = valid && p.closed ? E / (R + r) : 0;
+    const U = valid ? E - I * r : null;
+    const load = p.closed && U !== null ? U : 0;
+    const branches = p.topology === 'single' ? [{ I, U: I * p.r1, R: p.r1 }] : p.topology === 'series' ? [{ I, U: I * p.r1, R: p.r1 }, { I, U: I * p.r2, R: p.r2 }] : [{ I: load / p.r1, U: load, R: p.r1 }, { I: load / p.r2, U: load, R: p.r2 }];
+    return { E, U, I, R, r, loss: I * r, externalPower: I * I * R, internalPower: I * I * r, sourcePower: E * I, branches, drops: p.internal.map(v => I * v), nodes: { n: 0, p: U, a: valid ? load : null, m: valid ? (p.topology === 'series' ? I * p.r2 : load) : null } };
+}
+function probe(c, red, black) { const a = c.nodes[red], b = c.nodes[black]; return a == null || b == null ? null : a - b; }
+function loopValues(c, p, branch = 0) {
+    if (c.U === null)
+        return [];
+    const base = [{ label: '负极 N', value: 0 }, { label: '+ E', value: c.E }, { label: '− Ir', value: c.U }, { label: '正极 P', value: c.U }];
+    if (!p.closed)
+        return [...base, { label: '开关断口 − E', value: 0 }, { label: '负极 N', value: 0 }];
+    if (p.topology === 'series')
+        return [...base, { label: '− IR₁', value: c.nodes.m }, { label: '− IR₂', value: 0 }, { label: '负极 N', value: 0 }];
+    return [...base, { label: p.topology === 'parallel' ? `− I${branch + 1}R${branch + 1}` : '− IR₁', value: 0 }, { label: '负极 N', value: 0 }];
+}
+
+},
+"/src/model/field":function(module,exports,require){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RESISTOR_LENGTH = void 0;
+exports.solveField = solveField;
+exports.resistorField = resistorField;
+function solveField(current, resistance, length, kappa, diffusionCurrent, connected = true) {
+    if (!Number.isFinite(current) || !Number.isFinite(resistance) || resistance < 0 || !Number.isFinite(length) || length <= 0 || !kappa.length || diffusionCurrent.length !== kappa.length || kappa.some(v => !Number.isFinite(v) || v <= 0) || diffusionCurrent.some(v => !Number.isFinite(v)))
+        throw new Error('无效一维场参数');
+    const n = kappa.length, dx = length / n, x = kappa.map((_, i) => (i + .5) * dx), zero = () => Array(n).fill(0);
+    if (!connected || resistance === 0)
+        return { status: !connected ? 'disconnected' : 'ideal-zero', length, area: null, x, E: zero(), ohmicE: zero(), diffusionE: zero(), phi: Array(n + 1).fill(0), ohmicDrop: 0, diffusionDrop: 0, totalDrop: 0 };
+    // Adjustable equivalent r is calibrated by effective area; the UI reports this area.
+    // A is a conductance parameter, NOT the beaker's inventory volume divided by L.
+    const area = kappa.reduce((sum, k) => sum + dx / k, 0) / resistance;
+    const ohmicE = kappa.map(k => current / (area * k)), diffusionE = kappa.map((k, i) => -diffusionCurrent[i] / k);
+    const E = ohmicE.map((v, i) => v + diffusionE[i]), phi = [0];
+    for (const e of E)
+        phi.push(phi.at(-1) - e * dx);
+    return { status: 'solved', length, area, x, E, ohmicE, diffusionE, phi, ohmicDrop: ohmicE.reduce((a, v) => a + v * dx, 0), diffusionDrop: diffusionE.reduce((a, v) => a + v * dx, 0), totalDrop: -phi.at(-1) };
+}
+exports.RESISTOR_LENGTH = .02;
+function resistorField(voltage) { return { length: exports.RESISTOR_LENGTH, E: voltage / exports.RESISTOR_LENGTH }; }
+
+},
+"/src/model/integrator":function(module,exports,require){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.advance = advance;
+const chemistry_1 = require("./chemistry");
+const circuit_1 = require("./circuit");
+// Explicit midpoint, bounded by 60 simulated seconds and 0.5% of each remaining reactive inventory.
+// Every integral uses the SAME midpoint current; charge = 2F ξ exactly by construction.
+function advance(p, s, seconds) {
+    if (!Number.isFinite(seconds) || seconds < 0)
+        throw new Error('无效时间步长');
+    let out = { ...s }, remaining = seconds;
+    for (let step = 0; remaining > 1e-10 && step < 20000; step++) {
+        if (out.stopped)
+            break;
+        const c = (0, circuit_1.solve)(p, out);
+        if (c.I === 0) {
+            out.time += remaining;
+            remaining = 0;
+            break;
+        }
+        const room = (0, chemistry_1.capacity)(p) - out.xi;
+        if (room <= 1e-13) {
+            out.stopped = '反应物接近耗尽：已到达模型保护边界，停止预测。';
+            break;
+        }
+        const ch = (0, chemistry_1.chemistry)(p, out), rate = c.I / (2 * chemistry_1.F);
+        const h = Math.min(remaining, 60, .005 * Math.min(ch.cu * p.volume, ch.znMetal, ch.zn * p.volume) / rate, room / rate);
+        const mid = { ...out, xi: out.xi + rate * h / 2 };
+        const cm = (0, circuit_1.solve)(p, mid);
+        const dx = Math.min(room, cm.I * h / (2 * chemistry_1.F));
+        out.xi += dx;
+        out.charge = 2 * chemistry_1.F * out.xi;
+        out.time += h;
+        out.externalEnergy += cm.externalPower * h;
+        out.internalEnergy += cm.internalPower * h;
+        out.sourceEnergy += cm.sourcePower * h;
+        remaining -= h;
+        if ((0, chemistry_1.capacity)(p) - out.xi <= 1e-13)
+            out.stopped = '反应物接近耗尽：已到达模型保护边界，停止预测。';
+    }
+    if (remaining > 1e-8 && !out.stopped)
+        throw new Error('积分预算超限，请降低单次推进时间');
+    return out;
+}
+
+},
+"/src/model/lab":function(module,exports,require){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Lab = void 0;
+const chemistry_1 = require("./chemistry");
+const circuit_1 = require("./circuit");
+const integrator_1 = require("./integrator");
+const transport_1 = require("./transport");
+const tracers_1 = require("../view/tracers");
+class Lab {
+    params = (0, chemistry_1.defaults)();
+    state = (0, chemistry_1.initialState)();
+    running = true;
+    scale = 'macro';
+    electrode = 'zn';
+    history = [];
+    transportOptions = (0, transport_1.transportDefaults)();
+    visualGain = 40000;
+    tracers = (0, tracers_1.createTracers)();
+    transportKey = '';
+    cachedTransport = null;
+    transport() { const key = JSON.stringify([this.params, this.state.xi, this.state.stopped, this.transportOptions]); if (key !== this.transportKey || !this.cachedTransport) {
+        this.cachedTransport = (0, transport_1.solveTransport)(this.params, this.state, this.transportOptions);
+        this.transportKey = key;
+    } return this.cachedTransport; }
+    updateTransport(patch) { const next = { ...this.transportOptions, ...patch }; (0, transport_1.solveTransport)(this.params, this.state, next); this.transportOptions = next; this.record(); }
+    constructor() { this.record(); }
+    snapshot() { return { time: this.state.time, xi: this.state.xi, chemistry: (0, chemistry_1.chemistry)(this.params, this.state), circuit: (0, circuit_1.solve)(this.params, this.state), externalEnergy: this.state.externalEnergy, transport: (0, transport_1.summarizeTransport)(this.transport()) }; }
+    record() { this.history.push(this.snapshot()); if (this.history.length > 900) {
+        this.history = this.history.filter((_, i) => i % 2 === 0 || i === this.history.length - 1);
+    } }
+    tick(realSeconds) { if (!this.running || this.state.stopped)
+        return; this.state = (0, integrator_1.advance)(this.params, this.state, realSeconds * this.params.speed); (0, tracers_1.advanceTracers)(this.tracers, this.transport(), realSeconds, this.visualGain, this.params.bridge); if (this.state.stopped)
+        this.running = false; this.record(); }
+    update(patch) { const next = { ...this.params, ...patch }; (0, chemistry_1.validateParams)(next); this.params = next; this.record(); }
+    reset() { this.state = (0, chemistry_1.initialState)(); this.tracers = (0, tracers_1.createTracers)(); this.history = []; this.record(); }
+    preset(id) { this.params = (0, chemistry_1.defaults)(); this.transportOptions = (0, transport_1.transportDefaults)(); this.reset(); this.running = true; if (id === 'A')
+        this.params.closed = false; if (id === 'C')
+        this.params.internal = [.1, 1.45, 5, 1.45]; if (id === 'D')
+        this.params.speed = 5000; this.history = []; this.record(); }
+}
+exports.Lab = Lab;
+
+},
+"/src/model/resistance":function(module,exports,require){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.externalResistance = exports.totalInternal = exports.resistanceNames = void 0;
+exports.resistanceNames = ['金属与连接导体', '阳极电解液', 'KNO₃ 盐桥', '阴极电解液'];
+const totalInternal = (p) => p.internal.reduce((a, b) => a + b, 0);
+exports.totalInternal = totalInternal;
+const externalResistance = (p) => p.topology === 'single' ? p.r1 : p.topology === 'series' ? p.r1 + p.r2 : 1 / (1 / p.r1 + 1 / p.r2);
+exports.externalResistance = externalResistance;
+
+},
+"/src/model/transport":function(module,exports,require){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.transportDefaults = exports.REGION_NAMES = exports.REGION_IDS = exports.ION_IDS = exports.IONS = void 0;
+exports.nernstPlanck = nernstPlanck;
+exports.conductivity = conductivity;
+exports.solveTransport = solveTransport;
+exports.summarizeTransport = summarizeTransport;
+exports.mixedSources = mixedSources;
+const chemistry_1 = require("./chemistry");
+const circuit_1 = require("./circuit");
+const field_1 = require("./field");
+// 298.15 K dilute-water reference scale, see MODEL.md / PHREEQC database.
+// K and NO3 deliberately share their mean D: suppresses an unmodelled diffusion junction voltage.
+exports.IONS = {
+    zn: { id: 'zn', label: 'Zn²⁺', name: '锌离子', z: 2, D: .715e-9, color: '#a4bdce' },
+    cu: { id: 'cu', label: 'Cu²⁺', name: '铜离子', z: 2, D: .733e-9, color: '#69abed' },
+    so4: { id: 'so4', label: 'SO₄²⁻', name: '硫酸根离子', z: -2, D: 1.07e-9, color: '#94a3b8' },
+    k: { id: 'k', label: 'K⁺', name: '钾离子', z: 1, D: 1.93e-9, color: '#dfb57d' },
+    no3: { id: 'no3', label: 'NO₃⁻', name: '硝酸根离子', z: -1, D: 1.93e-9, color: '#b79cdd' }
+};
+exports.ION_IDS = Object.keys(exports.IONS);
+exports.REGION_IDS = ['anode', 'bridge', 'cathode'];
+exports.REGION_NAMES = { anode: '阳极电解液', bridge: 'KNO₃ 盐桥', cathode: '阴极电解液' };
+const transportDefaults = () => ({ bridgeGradient: 0 });
+exports.transportDefaults = transportDefaults;
+function nernstPlanck(D, z, c, gradient, E, T) {
+    if (![D, z, c, gradient, E, T].every(Number.isFinite) || D <= 0 || c < 0 || T <= 0)
+        throw new Error('无效离子输运参数');
+    const diffusion = -D * gradient, migration = z * D * chemistry_1.F / (chemistry_1.GAS * T) * c * E, total = diffusion + migration;
+    return { c, gradient, diffusion, migration, total, velocity: c > 0 ? total / c : 0 };
+}
+function conductivity(species, T) { return chemistry_1.F * chemistry_1.F / (chemistry_1.GAS * T) * species.reduce((a, v) => a + v.z * v.z * v.D * v.c, 0); }
+const empty = () => ({ zn: 0, cu: 0, so4: 0, k: 0, no3: 0 });
+function solveTransport(p, s, options = (0, exports.transportDefaults)(), circuit = (0, circuit_1.solve)(p, s)) {
+    if (!Number.isFinite(options.bridgeGradient) || Math.abs(options.bridgeGradient) > .8)
+        throw new Error('盐桥梯度幅度必须在 −0.8 到 0.8 之间');
+    const ch = (0, chemistry_1.chemistry)(p, s), volume = p.volume / 1000, compensation = 2 * s.xi / volume;
+    // Mixed-reservoir closure: sulfate stays in its original half-cell. Salt reservoir
+    // supplies 2ξ nitrate to anode and 2ξ potassium to cathode, preserving electroneutrality.
+    const means = {
+        anode: { ...empty(), zn: ch.zn * 1000, so4: p.zn0 * 1000, no3: compensation },
+        bridge: { ...empty(), k: 1000, no3: 1000 },
+        cathode: { ...empty(), cu: ch.cu * 1000, so4: p.cu0 * 1000, k: compensation }
+    };
+    const gradient = p.bridge ? options.bridgeGradient : 0;
+    const regions = exports.REGION_IDS.map((id, ri) => {
+        const length = id === 'bridge' ? .06 : .03, resistance = p.internal[ri + 1], n = 12, mean = means[id];
+        const samples = Array.from({ length: n }, (_, i) => {
+            const position = (i + .5) / n, shape = id === 'bridge' ? 1 + gradient * (2 * position - 1) : 1;
+            const ions = Object.fromEntries(exports.ION_IDS.map(key => [key, { c: mean[key] * shape, g: id === 'bridge' ? mean[key] * 2 * gradient / length : 0 }]));
+            const kappa = conductivity(exports.ION_IDS.map(key => ({ ...exports.IONS[key], c: ions[key].c })), p.temperature);
+            const jdiff = chemistry_1.F * exports.ION_IDS.reduce((sum, key) => sum + exports.IONS[key].z * (-exports.IONS[key].D * ions[key].g), 0);
+            return { ions, kappa, jdiff };
+        });
+        const field = (0, field_1.solveField)(circuit.I, resistance, length, samples.map(v => v.kappa), samples.map(v => v.jdiff), id !== 'bridge' || p.bridge);
+        const cells = samples.map((sample, i) => {
+            const ions = Object.fromEntries(exports.ION_IDS.map(key => [key, nernstPlanck(exports.IONS[key].D, exports.IONS[key].z, sample.ions[key].c, sample.ions[key].g, field.E[i], p.temperature)]));
+            // A zero-r region is an ideal bypass, NOT a finite-area NP conductor.
+            if (field.status !== 'solved')
+                for (const key of exports.ION_IDS) {
+                    ions[key] = { ...ions[key], migration: 0, diffusion: 0, total: 0, velocity: 0 };
+                }
+            return { s: field.x[i], kappa: sample.kappa, ions, chargeConcentration: exports.ION_IDS.reduce((sum, key) => sum + exports.IONS[key].z * ions[key].c, 0), current: field.area === null ? null : field.area * chemistry_1.F * exports.ION_IDS.reduce((sum, key) => sum + exports.IONS[key].z * ions[key].total, 0) };
+        });
+        return { id, length, resistance, field, cells, mean, inventoryVolume: id === 'bridge' ? null : volume };
+    });
+    const bridge = regions[1];
+    const boundary = bridge.cells[0];
+    const exchange = bridge.field.area === null ? null : { bridgeKRate: bridge.field.area * boundary.ions.k.total, bridgeNO3Rate: bridge.field.area * boundary.ions.no3.total, anodeNeutralRate: bridge.field.area * boundary.ions.k.total, cathodeNeutralRate: -bridge.field.area * boundary.ions.no3.total };
+    return { regions, reservoirExchange: exchange, current: circuit.I, gradient, maxCurrentError: Math.max(...regions.flatMap(r => r.cells.map(v => v.current === null ? 0 : Math.abs(v.current - circuit.I)))), maxChargeError: Math.max(...regions.flatMap(r => r.cells.map(v => Math.abs(v.chargeConcentration)))), reservoirSupply: { k: 2 * s.xi, no3: 2 * s.xi } };
+}
+function summarizeTransport(t) { return { gradient: t.gradient, fields: t.regions.map(r => r.field.status === 'solved' ? r.field.E.reduce((a, b) => a + b, 0) / r.cells.length : null), currents: t.regions.map(r => r.cells[0].current), areas: t.regions.map(r => r.field.area), currentError: t.maxCurrentError }; }
+/** Reaction and reservoir boundary exchanges, homogenized over the mixed volumes, mol/(m³ s). */
+function mixedSources(p, current) {
+    const rate = current / (2 * chemistry_1.F) / (p.volume / 1000);
+    return { anode: { ...empty(), zn: rate, no3: 2 * rate }, cathode: { ...empty(), cu: -rate, k: 2 * rate } };
+}
+
+},
+"/src/model/types":function(module,exports,require){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+
+},
+"/src/view/charts":function(module,exports,require){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.plot = plot;
+exports.potential = potential;
+exports.phenomenon = phenomenon;
+exports.probeValue = probeValue;
+const circuit_1 = require("../model/circuit");
+const scene_1 = require("./scene");
+const svg = (body, h = 180) => `<svg viewBox="0 0 560 ${h}" role="img" xmlns="http://www.w3.org/2000/svg">${body}</svg>`;
+function plot(lab, kind) {
+    const h = lab.history, series = kind === 'voltage' ? [{ name: 'E', color: '#9badd5', values: h.map(s => s.circuit.E) }, { name: 'U', color: '#70d9bd', values: h.map(s => s.circuit.U) }] : kind === 'current' ? [{ name: 'I', color: '#e9bb7c', values: h.map(s => s.circuit.I) }] : [{ name: 'Zn²⁺', color: '#a4bdce', values: h.map(s => s.chemistry.zn) }, { name: 'Cu²⁺', color: '#69abed', values: h.map(s => s.chemistry.cu) }];
+    const elapsed = h.at(-1).time - h[0].time;
+    const divisor = elapsed < 120 ? 1 : elapsed < 7200 ? 60 : 3600;
+    const unit = divisor === 1 ? 's' : divisor === 60 ? 'min' : 'h';
+    const max = Math.max(.01, ...series.flatMap(s => s.values.filter(v => v !== null))) * 1.12;
+    const t0 = h[0].time, t1 = Math.max(t0 + 1, h.at(-1).time);
+    const x = (t) => 48 + (t - t0) / (t1 - t0) * 490, y = (v) => 145 - v / max * 115;
+    let body = '';
+    for (let i = 0; i < 4; i++) {
+        let yy = 145 - i / 3 * 115;
+        body += `<path d="M48 ${yy} H538" stroke="#23313e" stroke-dasharray="3 5"/><text x="39" y="${yy + 4}" text-anchor="end" class="axis">${(max * i / 3).toFixed(2)}</text>`;
+    }
+    body += `<text x="48" y="171" class="axis">${(t0 / divisor).toFixed(2)} ${unit}</text><text x="538" y="171" text-anchor="end" class="axis">${(t1 / divisor).toFixed(2)} ${unit} · 模拟时间</text>`;
+    for (const s of series) {
+        let drawing = false;
+        const d = h.map((point, i) => { const v = s.values[i]; if (v === null) {
+            drawing = false;
+            return '';
+        } const cmd = drawing ? 'L' : 'M'; drawing = true; return `${cmd}${x(point.time).toFixed(2)} ${y(v).toFixed(2)}`; }).join(' ');
+        body += `<path d="${d}" stroke="${s.color}" fill="none" stroke-width="2"/>`;
+        const last = s.values.at(-1);
+        if (last != null)
+            body += `<circle cx="${x(h.at(-1).time)}" cy="${y(last)}" r="3.5" fill="${s.color}"/>`;
+    }
+    return svg(body);
+}
+function potential(lab, branch) {
+    const c = lab.snapshot().circuit, vals = (0, circuit_1.loopValues)(c, lab.params, branch);
+    if (!vals.length)
+        return '<div class="empty">盐桥中断或模型已停止：内部状态不受本模型定量预测，回路电压图暂停。</div>';
+    const x = (i) => 45 + i * 470 / (vals.length - 1), y = (v) => 170 - v / Math.max(c.E, 1.1) * 130;
+    let b = '';
+    [0, .55, 1.1].forEach(v => b += `<path d="M45 ${y(v)} H520" stroke="#263441" stroke-dasharray="4 5"/><text x="35" y="${y(v) + 4}" class="axis" text-anchor="end">${(0, scene_1.fmt)(v, 2)}</text>`);
+    const d = vals.map((v, i) => `${i ? 'L' : 'M'}${x(i)} ${y(v.value)}`).join(' ');
+    b += `<path d="${d}" fill="none" stroke="#73ddc2" stroke-width="2.5"/>`;
+    vals.forEach((v, i) => b += `<circle cx="${x(i)}" cy="${y(v.value)}" r="4" fill="#73ddc2"/><text x="${x(i)}" y="${y(v.value) - 12}" class="chart-value" text-anchor="middle">${(0, scene_1.fmt)(v.value)} V</text><text x="${x(i)}" y="204" class="axis" text-anchor="middle">${v.label}</text>`);
+    return svg(b, 225);
+}
+function phenomenon() { return svg(`<text x="25" y="24" class="axis">定性示意 · 无纵轴数值 · 宽度不代表真实尺度</text><rect x="30" y="45" width="80" height="130" fill="#253948"/><rect x="110" y="45" width="135" height="130" fill="#142c37"/><rect x="245" y="45" width="80" height="130" fill="#253d38"/><rect x="325" y="45" width="135" height="130" fill="#122b40"/><rect x="460" y="45" width="70" height="130" fill="#48362c"/><path d="M35 120 H100 C108 120 110 70 120 70 L235 84 L325 100 L450 114 C458 114 460 55 470 55 H525" stroke="#e5b87c" stroke-width="2" fill="none" stroke-dasharray="5 3"/><text x="70" y="195" class="axis" text-anchor="middle">Zn</text><text x="176" y="195" class="axis" text-anchor="middle">阳极液</text><text x="285" y="195" class="axis" text-anchor="middle">盐桥</text><text x="391" y="195" class="axis" text-anchor="middle">阴极液</text><text x="495" y="195" class="axis" text-anchor="middle">Cu</text><text x="110" y="225" class="axis">界面跃迁 ≠ 溶液内欧姆梯度</text>`, 250); }
+function probeValue(lab, red, black) { return (0, scene_1.fmt)((0, circuit_1.probe)(lab.snapshot().circuit, red, black), 4); }
+
+},
+"/src/view/scene":function(module,exports,require){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.fmt = void 0;
+exports.scene = scene;
+const transport_scene_1 = require("./transport-scene");
+const chemistry_1 = require("../model/chemistry");
+const fmt = (n, d = 3) => n === null ? '—' : n.toFixed(d);
+exports.fmt = fmt;
+const text = (x, y, s, cls = 'label', extra = '') => `<text x="${x}" y="${y}" class="${cls}" ${extra}>${s}</text>`;
+const circle = (x, y, r, fill, label = '') => `<circle cx="${x}" cy="${y}" r="${r}" fill="${fill}"/>${label ? text(x, y + 4, label, 'ion-text', 'text-anchor="middle"') : ''}`;
+const defs = `<defs><linearGradient id="zn" x1="0" x2="1"><stop stop-color="#63798a"/><stop offset=".35" stop-color="#b3c7d5"/><stop offset=".6" stop-color="#7e94a6"/><stop offset="1" stop-color="#4e6477"/></linearGradient><linearGradient id="cu" x1="0" x2="1"><stop stop-color="#935132"/><stop offset=".4" stop-color="#e5ad76"/><stop offset=".7" stop-color="#b8754d"/><stop offset="1" stop-color="#714732"/></linearGradient><linearGradient id="liquidZ" x2="0" y2="1"><stop stop-color="#5793b4" stop-opacity=".23"/><stop offset="1" stop-color="#356179" stop-opacity=".08"/></linearGradient><linearGradient id="liquidC" x2="0" y2="1"><stop stop-color="#329ae7" stop-opacity=".37"/><stop offset="1" stop-color="#2874b5" stop-opacity=".12"/></linearGradient><pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".7" fill="#283748"/></pattern><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10" fill="#6cdbc1"/></marker><marker id="amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10" fill="#ddb36b"/></marker></defs>`;
+function pathPoint(t, pts) { let lengths = pts.slice(1).map((p, i) => Math.hypot(p[0] - pts[i][0], p[1] - pts[i][1])); let dist = ((t % 1) + 1) % 1 * lengths.reduce((a, b) => a + b, 0); for (let i = 0; i < lengths.length; i++) {
+    if (dist <= lengths[i]) {
+        const f = dist / lengths[i];
+        return [pts[i][0] + f * (pts[i + 1][0] - pts[i][0]), pts[i][1] + f * (pts[i + 1][1] - pts[i][1])];
+    }
+    dist -= lengths[i];
+} return pts[0]; }
+function particles(phase, pts, count, color) { return Array.from({ length: count }, (_, i) => { const [x, y] = pathPoint(phase + i / count, pts); return circle(x, y, 3, color); }).join(''); }
+function resistor(x, y, w, label) { return `<path d="M${x},${y} h12 m${w - 24},0 h12" class="wire"/><rect x="${x + 12}" y="${y - 11}" width="${w - 24}" height="22" rx="3" class="resistor"/>${text(x + w / 2, y - 22, label, 'label', 'text-anchor="middle"')}`; }
+function battery(lab, l, internal = false) {
+    const { chemistry: ch, circuit: c } = lab.snapshot(), p = lab.params, phase = lab.state.xi * 600000;
+    const ion = l.process === 'all' || l.process === 'ion', rx = l.process === 'all' || l.process === 'reaction';
+    const zincWidth = 42 * ch.znMetal / p.znMetal0, copperWidth = 42 * ch.cuMetal / p.cuMetal0;
+    const y = internal ? 175 : 250;
+    return `<g data-inside="true"><path d="M145 ${y} V420 Q145 432 157 432 H363 Q375 432 375 420 V${y}" class="glass"/><path d="M525 ${y} V420 Q525 432 537 432 H743 Q755 432 755 420 V${y}" class="glass"/><path d="M148 ${y + 34} H372 V420 Q372 428 363 428 H157 Q148 428 148 420Z" fill="url(#liquidZ)"/><path d="M528 ${y + 34} H752 V420 Q752 428 743 428 H537 Q528 428 528 420Z" fill="url(#liquidC)"/><path d="M148 ${y + 34} H372 M528 ${y + 34} H752" stroke="#5e9cbe" stroke-opacity=".4"/>
+ <g data-bridge="true" role="button" tabindex="0" aria-label="放大盐桥" class="clickable"><path d="M340 ${y + 92} V${y + 2} Q340 ${y - 25} 370 ${y - 25} H530 Q560 ${y - 25} 560 ${y + 2} V${y + 92}" fill="none" stroke="#315460" stroke-width="28"/><path d="M340 ${y + 92} V${y + 2} Q340 ${y - 25} 370 ${y - 25} H530 Q560 ${y - 25} 560 ${y + 2} V${y + 92}" fill="none" stroke="${p.bridge ? '#638b83' : '#332e36'}" stroke-width="18" opacity=".5"/>
+ ${!p.bridge ? `<path d="M430 ${y - 45} l40 40 M470 ${y - 45} l-40 40" stroke="#ee8a86" stroke-width="3"/>` : ''}
+ <rect x="370" y="${internal ? y - 68 : y + 9}" width="160" height="26" rx="4" fill="#19303b" opacity=".6"/>${text(450, internal ? y - 50 : y + 24, 'KNO₃ 盐桥 · 点击放大', 'muted', 'text-anchor="middle"')}</g>
+ ${(0, transport_scene_1.fieldLayer)(lab, l, y)}
+ ${(0, transport_scene_1.ionLayer)(lab, l, y)}
+ <g role="button" tabindex="0" aria-label="放大锌电极界面" data-electrode="zn" class="clickable"><rect x="${220 - zincWidth / 2}" y="${y - 24}" width="${zincWidth}" height="166" rx="4" fill="url(#zn)" stroke="#b1c5d1" stroke-opacity=".5"/>${text(220, y + 55, 'Zn', 'metal-symbol', 'text-anchor="middle"')}<circle cx="220" cy="${y + 160}" r="15" class="focus-ring"/>${text(220, y + 165, '⊕', 'focus-text', 'text-anchor="middle"')}</g>
+ <g role="button" tabindex="0" aria-label="放大铜电极界面" data-electrode="cu" class="clickable"><rect x="${680 - copperWidth / 2}" y="${y - 24}" width="${copperWidth}" height="166" rx="4" fill="url(#cu)" stroke="#efbd89" stroke-opacity=".4"/>${text(680, y + 55, 'Cu', 'metal-symbol', 'text-anchor="middle"')}<circle cx="680" cy="${y + 160}" r="15" class="focus-ring"/>${text(680, y + 165, '⊕', 'focus-text', 'text-anchor="middle"')}</g>
+ ${text(155, 459, '−  锌 · 阳极 / 氧化', 'zinc-text')}${text(545, 459, '+  铜 · 阴极 / 还原', 'copper-text')}
+ ${internal ? text(155, 480, `Zn²⁺  ${(0, exports.fmt)(ch.zn, 4)} mol/L`, 'muted') + text(545, 480, `Cu²⁺  ${(0, exports.fmt)(ch.cu, 4)} mol/L`, 'muted') : ''}
+ ${rx && internal ? text(145, 526, 'Zn(s) → Zn²⁺(aq) + 2e⁻', 'reaction') + text(525, 526, 'Cu²⁺(aq) + 2e⁻ → Cu(s)', 'reaction') : ''}
+ ${l.process === 'resistance' ? `<rect x="145" y="365" width="610" height="54" rx="9" fill="#101b27" opacity=".94"/>${p.internal.map((r, i) => text(160 + i * 145, 389, `${['电子', '阳极液', '盐桥', '阴极液'][i]} ${(0, exports.fmt)(r, 2)} Ω`, 'muted') + text(160 + i * 145, 409, `ΔU = ${(0, exports.fmt)(c.drops[i])} V`, 'gold')).join('')}` : ''}</g>`;
+}
+function macro(lab, l) {
+    const { circuit: c } = lab.snapshot(), p = lab.params, phase = lab.state.xi * 600000;
+    let block = '';
+    if (p.topology === 'single')
+        block = resistor(390, 100, 200, `R₁ = ${(0, exports.fmt)(p.r1, 1)} Ω`);
+    if (p.topology === 'series')
+        block = resistor(390, 100, 95, `R₂ ${(0, exports.fmt)(p.r2, 1)} Ω`) + resistor(495, 100, 95, `R₁ ${(0, exports.fmt)(p.r1, 1)} Ω`) + `<path d="M485 100 H495" class="wire"/>`;
+    if (p.topology === 'parallel')
+        block = `<path d="M390 100 V62 H410 M390 100 V143 H410 M570 62 H590 V143 H570" class="wire"/>${resistor(410, 62, 160, `R₁ ${(0, exports.fmt)(p.r1, 1)} Ω`)}${resistor(410, 143, 160, `R₂ ${(0, exports.fmt)(p.r2, 1)} Ω`)}${text(364, 70, `${(0, exports.fmt)(c.branches[0].I)} A`, 'tiny', 'text-anchor="middle"')}${text(364, 162, `${(0, exports.fmt)(c.branches[1].I)} A`, 'tiny', 'text-anchor="middle"')}`;
+    return `<path d="M220 226 V100 H290 M330 100 H390 M590 100 H620 M670 100 H680 V226" class="wire"/><circle cx="310" cy="100" r="20" class="meter"/>${text(310, 106, 'A', 'meter-symbol', 'text-anchor="middle"')}${text(310, 144, `${(0, exports.fmt)(c.I)} A`, 'muted', 'text-anchor="middle"')}${block}
+ <g data-action="switch" role="button" tabindex="0" aria-label="切换电路开关" class="clickable"><rect x="603" y="64" width="78" height="54" fill="transparent"/><path d="M622 100 L668 ${p.closed ? 100 : 75}" class="switch-line"/><circle cx="620" cy="100" r="4" fill="#bbd6cf"/><circle cx="670" cy="100" r="4" fill="#bbd6cf"/>${text(646, 54, p.closed ? '闭合' : '断开', 'muted', 'text-anchor="middle"')}</g>
+ ${l.electrons && l.process !== 'ion' && l.process !== 'reaction' && l.process !== 'resistance' ? (p.topology === 'parallel' ? particles(phase, [[220, 225], [220, 100], [390, 100]], 5, '#7ee2c8') + particles(phase, [[590, 100], [680, 100], [680, 225]], 4, '#7ee2c8') + particles(phase * p.r2 / (p.r1 + p.r2), [[390, 100], [390, 62], [590, 62], [590, 100]], 4, '#7ee2c8') + particles(phase * p.r1 / (p.r1 + p.r2), [[390, 100], [390, 143], [590, 143], [590, 100]], 4, '#7ee2c8') : particles(phase, [[220, 225], [220, 100], [680, 100], [680, 225]], 12, '#7ee2c8')) : ''}
+ ${l.current && c.I > 0 ? `<path d="M560 20 H430" stroke="#ddb36b" stroke-width="1.5" marker-end="url(#amber)"/>${text(580, 24, 'I 传统电流', 'gold')}` : ''}
+ ${l.electrons ? `${text(145, 30, 'e⁻  电子 Zn → Cu', 'mint')}` : ''}
+ ${l.voltage ? `<path d="M220 190 H422 M478 190 H680" class="measure-line"/><circle cx="450" cy="190" r="26" class="meter"/>${text(450, 197, 'V', 'meter-symbol', 'text-anchor="middle"')}${text(450, 163, `${(0, exports.fmt)(c.U)} V`, 'mint', 'text-anchor="middle"')}` : ''}
+ ${battery(lab, l)}${(0, transport_scene_1.externalFields)(lab, l)}
+ ${[['n', 220, 210], ['p', 680, 210], ['a', 595, 100], ...(p.topology === 'series' ? [['m', 490, 100]] : [])].map(([id, x, y]) => `<g data-node="${id}" tabindex="0" role="button" aria-label="选择测量节点 ${String(id).toUpperCase()}" class="clickable"><circle cx="${x}" cy="${y}" r="13" fill="transparent"/><circle cx="${x}" cy="${y}" r="5" fill="#9ab7bd" stroke="#101923" stroke-width="2"/>${text(Number(x) + 10, Number(y) + 4, String(id).toUpperCase(), 'tiny')}</g>`).join('')}`;
+}
+function inside(lab, l) { const c = lab.snapshot().circuit, phase = lab.state.xi * 600000; return `${text(450, 29, '电池剖面 · 电荷传输的两种方式', 'scene-heading', 'text-anchor="middle"')}<path d="M220 151 V70 H680 V151" class="wire"/>${text(450, 61, `外电路电子通道  ·  ${(0, exports.fmt)(c.I)} A`, 'mint', 'text-anchor="middle"')}${l.electrons && (l.process === 'all' || l.process === 'electron') ? particles(phase, [[220, 151], [220, 70], [680, 70], [680, 151]], 10, '#7ee2c8') : ''}${battery(lab, l, true)}`; }
+function micro(lab, l) {
+    const zn = lab.electrode === 'zn', { chemistry: ch, circuit: c } = lab.snapshot(), phase = (lab.state.xi * 600000) % 1, react = l.process === 'all' || l.process === 'reaction', ion = l.process === 'all' || l.process === 'ion', electron = l.electrons && (l.process === 'all' || l.process === 'electron' || l.process === 'reaction');
+    const edge = 330 + (zn ? -1 : 1) * Math.min(90, lab.state.xi * 600);
+    const color = zn ? '#9cb6c9' : '#d9a477';
+    let atoms = '';
+    for (let row = 0; row < 6; row++)
+        for (let col = 0; col < 6; col++) {
+            atoms += circle(edge - 25 - col * 36, 160 + row * 42 + (col % 2) * 20, 14, color);
+        }
+    const px = zn ? edge - 16 + phase * 196 : edge + 180 - phase * 196;
+    return `${text(450, 35, zn ? '锌电极界面 · 氧化' : '铜电极界面 · 还原', 'scene-heading', 'text-anchor="middle"')}<rect x="90" y="100" width="${edge - 90}" height="355" rx="8" fill="${zn ? '#283947' : '#45332a'}"/><rect x="${edge}" y="100" width="${810 - edge}" height="355" rx="8" fill="url(#${zn ? 'liquidZ' : 'liquidC'})"/><path d="M${edge} 100 V455" stroke="${color}" stroke-width="3"/>${atoms}
+ ${text(190, 130, zn ? 'Zn(s) 金属晶格' : 'Cu(s) 金属晶格', 'label')}${text(595, 130, zn ? 'ZnSO₄ 水溶液' : 'CuSO₄ 水溶液', 'label')}${text(edge, 484, '电极 / 电解液界面', 'muted', 'text-anchor="middle"')}
+ ${(0, transport_scene_1.microIonLayer)(lab, l, edge)}
+ ${l.field ? text(600, 80, '界面场未求解 · 主体场见电池剖面', 'muted', 'text-anchor="middle"') : ''}
+ ${react ? `<rect x="${edge + 5}" y="237" width="230" height="58" rx="9" fill="#11232d" opacity=".95"/>${circle(px, 266, 18, phase < (zn ? .12 : .88) ? (zn ? color : '#1b557e') : (zn ? '#355b73' : color), zn ? (phase < .12 ? 'Zn' : 'Zn²⁺') : (phase < .88 ? 'Cu²⁺' : 'Cu'))}<path d="M${zn ? edge + 28 : edge + 202} 309 H${zn ? edge + 202 : edge + 28}" stroke="#6cdbc1" marker-end="url(#arrow)"/>` : ''}
+ ${electron ? particles(zn ? phase : -phase, [[edge - 14, 264], [edge - 50, 264], [edge - 50, 83]], 2, '#7ee2c8') + text(edge - 85, 74, zn ? '2e⁻ → 外电路' : '外电路 → 2e⁻', 'mint', 'text-anchor="middle"') : ''}
+ ${text(450, 526, zn ? 'Zn(s) → Zn²⁺(aq) + 2e⁻' : 'Cu²⁺(aq) + 2e⁻ → Cu(s)', 'reaction', 'text-anchor="middle"')}${text(450, 552, `实际反应速率 ${((c.I / (2 * chemistry_1.F)) * 1e6).toFixed(3)} μmol/s · 电极质量 ${(0, exports.fmt)(zn ? ch.znMass : ch.cuMass, 4)} g`, 'muted', 'text-anchor="middle"')}`;
+}
+function scene(lab, l) { return `${defs}<rect width="900" height="570" fill="url(#grid)"/><g id="world">${lab.scale === 'macro' ? macro(lab, l) : lab.scale === 'inside' ? inside(lab, l) : micro(lab, l)}</g>`; }
+
+},
+"/src/view/touch":function(module,exports,require){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Viewport = void 0;
+class Viewport {
+    svg;
+    changed;
+    zoom = 1;
+    x = 0;
+    y = 0;
+    pointers = new Map();
+    distance = 0;
+    moved = 0;
+    constructor(svg, changed) {
+        this.svg = svg;
+        this.changed = changed;
+        svg.addEventListener('pointerdown', e => { this.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY }); this.distance = this.gap(); this.moved = 0; });
+        svg.addEventListener('pointermove', e => { const old = this.pointers.get(e.pointerId); if (!old)
+            return; this.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY }); const d = this.gap(); if (this.pointers.size === 2 && this.distance) {
+            this.zoom = Math.min(3, Math.max(.8, this.zoom * d / this.distance));
+        }
+        else {
+            this.x += (e.clientX - old.x) * 900 / svg.clientWidth;
+            this.y += (e.clientY - old.y) * 570 / svg.clientHeight;
+        } this.moved += Math.abs(e.clientX - old.x) + Math.abs(e.clientY - old.y); this.distance = d; if (this.moved > 6 && !svg.hasPointerCapture(e.pointerId))
+            svg.setPointerCapture(e.pointerId); this.apply(); });
+        const end = (e) => { this.pointers.delete(e.pointerId); this.distance = this.gap(); };
+        svg.addEventListener('pointerup', end);
+        svg.addEventListener('pointercancel', end);
+        svg.addEventListener('click', e => { if (this.moved > 10) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+        } }, true);
+        svg.addEventListener('wheel', e => { if (e.ctrlKey) {
+            e.preventDefault();
+            this.setZoom(this.zoom * (e.deltaY > 0 ? .95 : 1.05));
+        } }, { passive: false });
+    }
+    get interacting() { return this.pointers.size > 0; }
+    gap() { const p = [...this.pointers.values()]; return p.length === 2 ? Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y) : 0; }
+    setZoom(v) { this.zoom = Math.max(.8, Math.min(3, v)); this.apply(); }
+    reset() { this.zoom = 1; this.x = this.y = 0; this.apply(); }
+    apply() { this.x = Math.max(-600, Math.min(600, this.x)); this.y = Math.max(-400, Math.min(400, this.y)); this.svg.querySelector('#world')?.setAttribute('transform', `translate(${450 + this.x} ${285 + this.y}) scale(${this.zoom}) translate(-450 -285)`); this.changed(); }
+}
+exports.Viewport = Viewport;
+
+},
+"/src/view/tracers":function(module,exports,require){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PARCEL_COUNT = void 0;
+exports.createTracers = createTracers;
+exports.reflect = reflect;
+exports.advanceTracers = advanceTracers;
+const transport_1 = require("../model/transport");
+exports.PARCEL_COUNT = 256; // Brownian noise of a sampled parcel mean, not individual molecular MD.
+function createTracers() {
+    let id = 0;
+    const particles = [];
+    for (const [region, ions] of [['anode', ['zn', 'so4', 'no3']], ['bridge', ['k', 'no3']], ['cathode', ['cu', 'so4', 'k']]])
+        for (const [speciesIndex, ion] of ions.entries()) {
+            const count = region === 'bridge' ? 5 : 3;
+            for (let i = 0; i < count; i++)
+                particles.push({ id: id++, region, ion, s: (i + .2 + (id % 3) * .21) / count, lane: region === 'bridge' ? ((i * 3 + id) % 7 - 3) / 3 : -.8 + speciesIndex * .8 + (i - 1) * .12, meanDisplacement: 0 });
+        }
+    return { particles, seed: 283741, playbackTime: 0 };
+}
+function random(state) { state.seed = (Math.imul(state.seed, 1664525) + 1013904223) >>> 0; return (state.seed + .5) / 4294967296; }
+function normal(state) { return Math.sqrt(-2 * Math.log(random(state))) * Math.cos(2 * Math.PI * random(state)); }
+function reflect(x, lo, hi) { const w = hi - lo, t = ((x - lo) % (2 * w) + 2 * w) % (2 * w); return lo + (t > w ? 2 * w - t : t); }
+/** Playback time = wall time * gain, deliberately independent of electrochemistry time multiplier.
+ * Axial ends are open mixed-reservoir sampling faces, not glass walls. New parcels replace exiting ones.
+ * Lateral walls reflect. A broken bridge has two reflecting half-channels and no crossing.
+ */
+function advanceTracers(state, t, wallSeconds, gain, bridgeConnected) {
+    if (!Number.isFinite(wallSeconds) || wallSeconds < 0 || !Number.isFinite(gain) || gain < 0)
+        throw new Error('无效示踪播放步长');
+    if (wallSeconds === 0 || gain === 0)
+        return;
+    const duration = Math.min(wallSeconds, .25) * gain;
+    state.playbackTime += duration;
+    for (const particle of state.particles) {
+        const r = t.regions.find(v => v.id === particle.region);
+        if (r.mean[particle.ion] === 0)
+            continue;
+        const D = transport_1.IONS[particle.ion].D;
+        let left = duration;
+        while (left > 1e-9) {
+            const idx = Math.min(r.cells.length - 1, Math.floor(particle.s * r.cells.length));
+            const f = r.cells[idx].ions[particle.ion];
+            const v = f.velocity;
+            const h = Math.min(left, .012 * r.length / Math.max(Math.abs(v), 1e-15), (.012 * r.length) ** 2 * exports.PARCEL_COUNT / (2 * D));
+            const mean = v * h / r.length;
+            const noise = Math.sqrt(2 * D * h / exports.PARCEL_COUNT) / r.length;
+            particle.meanDisplacement += v * h;
+            let next = particle.s + mean + normal(state) * noise;
+            if (particle.region === 'bridge' && !bridgeConnected) {
+                const lower = particle.s < .5;
+                next = reflect(next, lower ? 0 : .53, lower ? .47 : 1);
+            }
+            else
+                next = ((next % 1) + 1) % 1;
+            particle.s = next;
+            particle.lane = reflect(particle.lane + normal(state) * noise * 12, -1, 1);
+            left -= h;
+        }
+    }
+}
+
+},
+"/src/view/transport-panel":function(module,exports,require){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.transportPanelHTML = transportPanelHTML;
+exports.renderTransportPanel = renderTransportPanel;
+exports.fieldProfile = fieldProfile;
+const transport_1 = require("../model/transport");
+const chemistry_1 = require("../model/chemistry");
+function transportPanelHTML() { return `<div class="transport-heading"><div><div class="eyebrow">V1.1 / ONE-DIMENSIONAL TRANSPORT</div><h3>电场、扩散与电迁移</h3></div><button id="export-transport" class="text-button">↓ 当前输运 CSV</button></div><div class="transport-selectors"><label>区域<select id="inspect-region">${['anode', 'bridge', 'cathode'].map(id => `<option value="${id}" ${id === 'bridge' ? 'selected' : ''}>${transport_1.REGION_NAMES[id]}</option>`).join('')}</select></label><label>离子<select id="inspect-ion">${transport_1.ION_IDS.map(id => `<option value="${id}" ${id === 'k' ? 'selected' : ''}>${transport_1.IONS[id].label} · ${transport_1.IONS[id].name}</option>`).join('')}</select></label><label class="inspect-position-label">位置 s/L <output id="inspect-position-value">0.50</output><input type="range" id="inspect-position" min="0" max="1" step="0.01" value="0.5"></label></div><div class="transport-panel-grid"><article><div id="ion-inspector"></div><div id="transport-directions" class="transport-directions"></div></article><article><div id="transport-calibration"></div><div id="transport-profile"></div></article></div><div class="gradient-experiment"><label class="range-label" for="bridge-gradient"><span>盐桥储库浓差实验 · g = (c右 − c左)/(2c均)</span><output id="bridge-gradient-value">0.00</output></label><input type="range" id="bridge-gradient" min="-0.8" max="0.8" step="0.05" value="0"><p id="gradient-boundaries" class="help"></p><p class="help">这是外加、持续维持的中性盐储库边界，不是自动预测的电池浓差。盐桥 K⁺/NO₃⁻ 共用教学近似 D=1.93×10⁻⁹ m²/s，因此扩散电流互相抵消；没有把液接电势偷偷加入原电池电动势。断开外电路仍可扩散；盐桥中断后两个半通道只保留热扰动。</p></div><details class="transport-scope"><summary>定量范围与库存闭合假设</summary><p class="help">无对流、一维体相、电中性、理想稀溶液系数。阳极液与阴极液保持均匀混合；Zn²⁺/Cu²⁺ 的浓度积分严格等于 ξ 的库存，SO₄²⁻ 留在原半电池。充足盐储库累计提供 2ξ mol NO₃⁻ 至阳极、2ξ mol K⁺ 至阴极来维持电中性；这是一项显式的混合储库闭合假设，并非完整盐桥交换动力学。区域之间保证总电荷流连续，未求解各物种在电极/盐桥连接边界层中的连续浓度与通量匹配。</p><p class="help">有效截面积 Aₑff = Σ(Δs/κ)/r 随等效电阻与库存重校准；它不是烧杯的几何横截面，不能用 Aₑff L 替代 0.10 L 库存体积。电场定量值只适用于所标注的有效通道长度。r=0 是理想旁路，有限面积 Nernst–Planck 定量解禁用。未求解二维场线、电极双电层、活度修正、酸碱/络合平衡、温升或完整浓差极化。</p><p class="help">扩散系数参考 <a href="https://github.com/usgs-coupled-subtrees/phreeqc3-database/blob/master/phreeqc.dat" target="_blank" rel="noreferrer">USGS PHREEQC 数据库</a>；K⁺ 与 NO₃⁻ 的参考值为 1.96 和 1.90×10⁻⁹ m²/s，本模型取其平均。它们在真实浓电解质中的有效系数可能不同。</p></details>`; }
+const sci = (v) => v === 0 ? '0' : v.toExponential(3);
+const direction = (v) => Math.abs(v) < 1e-20 ? '0 · 无净通量' : v > 0 ? '→ +s · 向铜侧' : '← −s · 向锌侧';
+function renderTransportPanel(lab, region, ion, position) {
+    const result = lab.transport(), r = result.regions.find(v => v.id === region), i = Math.min(r.cells.length - 1, Math.floor(position * r.cells.length)), cell = r.cells[i], f = cell.ions[ion], def = transport_1.IONS[ion], valid = r.field.status === 'solved';
+    const disconnected = r.field.status === 'disconnected';
+    const items = [['电荷数 z', String(def.z)], ['局部浓度', disconnected ? '中断后未求解（储库设定 1 mol/L）' : `${sci(f.c)} mol/m³ (${(f.c / 1000).toFixed(4)} mol/L)`], ['扩散系数 D', `${sci(def.D)} m²/s`], ['有符号迁移率 zDF/(RT)', `${sci(def.z * def.D * chemistry_1.F / (chemistry_1.GAS * lab.params.temperature))} m²/(V·s)`], ['浓度梯度 ∂c/∂s', disconnected ? '中断后未求解' : `${sci(f.gradient)} mol/m⁴`], ['局部电场 𝓔', valid ? `${r.field.E[i].toFixed(4)} V/m · ${r.field.E[i] === 0 ? '0' : r.field.E[i] > 0 ? '+s' : '−s'}` : '未定量'], ['扩散通量 Jdiff', valid ? `${sci(f.diffusion)} mol/(m²·s)` : '未定量'], ['电迁移通量 Jmig', valid ? `${sci(f.migration)} mol/(m²·s)` : '未定量'], ['总通量 J', valid ? `${sci(f.total)} mol/(m²·s)` : '未定量']];
+    const inspector = `<h3 style="color:${def.color}">${def.label} · ${def.name} <small>${transport_1.REGION_NAMES[region]}，s=${cell.s.toFixed(4)} m</small></h3><dl class="ion-values">${items.map(([label, value]) => `<dt>${label}</dt><dd>${value}</dd>`).join('')}</dl>${f.c === 0 ? '<p class="help">此区域当前没有该物种，迁移通量为零；不会绘制虚构粒子。</p>' : ''}`;
+    const fluxGraph = (value, row, color, dashed) => { const zero = Math.abs(value) < 1e-20, start = 185, end = zero ? 185 : value > 0 ? 265 : 105; return `<text x="5" y="${row + 4}" fill="${color}" font-size="11">${dashed ? '扩散' : '电迁移'}</text><path d="M${start} ${row} H${end}" fill="none" stroke="${color}" stroke-width="2" ${dashed ? 'stroke-dasharray="5 4"' : ''}/>${zero ? `<circle cx="185" cy="${row}" r="3" fill="${color}"/>` : `<path d="M${end + (value > 0 ? -7 : 7)} ${row - 4} L${end} ${row} L${end + (value > 0 ? -7 : 7)} ${row + 4}" fill="none" stroke="${color}" stroke-width="2"/>`}`; };
+    const directions = `${valid ? `<svg viewBox="0 0 370 90" role="img" aria-label="求解得到的扩散和迁移方向">${fluxGraph(f.migration, 25, '#91d7be', false)}${fluxGraph(f.diffusion, 65, '#bca2de', true)}<text x="285" y="48" class="axis">+s → 铜侧</text></svg>` : ''}<span class="migration-key">实线 / 电迁移：${valid ? direction(f.migration) : '未定量'}</span><span class="diffusion-key">虚线 / 扩散：${valid ? direction(f.diffusion) : '未定量'}</span><span>合成净通量：${valid ? direction(f.total) : '未定量'}</span>`;
+    const exchange = result.reservoirExchange;
+    const calibration = `<h3>该区域的模型校验</h3><dl class="ion-values"><dt>有效长度 L</dt><dd>${r.length.toFixed(3)} m</dd><dt>截面积 Aₑff</dt><dd>${valid ? (r.field.area * 1e4).toFixed(3) + ' cm²' : '—（理想旁路 / 中断）'}</dd><dt>局部电导率 κ</dt><dd>${cell.kappa.toFixed(4)} S/m</dd><dt>区域等效内阻</dt><dd>${r.resistance.toFixed(3)} Ω</dd><dt>∫𝓔 ds / Irᵢ</dt><dd>${valid ? r.field.totalDrop.toFixed(5) + ' / ' + (result.current * r.resistance).toFixed(5) + ' V' : '—'}</dd><dt>AFΣzJ / 电路 I</dt><dd>${valid ? cell.current.toFixed(6) + ' / ' + result.current.toFixed(6) + ' A' : '—'}</dd><dt>全截面最大电流残差</dt><dd>${sci(result.maxCurrentError)} A</dd><dt>最大电中性残差 |Σzc|</dt><dd>${sci(result.maxChargeError)} mol/m³</dd></dl>${exchange ? `<p class="help">中性 KNO₃ 储库交换：阳极端 ${sci(exchange.anodeNeutralRate)} mol/s；阴极端 ${sci(exchange.cathodeNeutralRate)} mol/s。正值补入、负值移出；净计入 K⁺ 与 NO₃⁻ 各 ${sci(result.current / chemistry_1.F)} mol/s。</p>` : ''}`;
+    return { inspector, directions, calibration };
+}
+function fieldProfile(lab) {
+    const t = lab.transport();
+    if (t.regions.some(r => r.field.status !== 'solved'))
+        return '<p class="help">部分区域为理想零阻或盐桥中断：不绘制贯通电势。局部定量结果见上表。</p>';
+    const total = t.regions.reduce((v, r) => v + r.field.totalDrop, 0), scale = Math.max(.05, total);
+    let length = 0, offset = 0, points = '', labels = '';
+    for (const r of t.regions) {
+        r.field.phi.forEach((v, i) => { const s = length + i * r.length / r.cells.length; points += `${points ? ' L' : 'M'}${40 + s / .12 * 460} ${35 - (v + offset) / scale * 100}`; });
+        labels += `<text x="${40 + (length + r.length / 2) / .12 * 460}" y="169" text-anchor="middle" class="axis">${transport_1.REGION_NAMES[r.id]}</text>`;
+        length += r.length;
+        offset -= r.field.totalDrop;
+    }
+    return `<svg viewBox="0 0 560 208" role="img" aria-label="一维欧姆电势剖面"><path d="M40 30 V145 H510" fill="none" stroke="#334b56"/><path d="${points}" fill="none" stroke="#63dce8" stroke-width="2"/>${labels}<text x="40" y="20" class="axis">φ = 0 V</text><text x="505" y="${Math.min(151, 45 + total / scale * 100)}" text-anchor="end" class="axis">−${total.toFixed(4)} V</text><text x="280" y="192" text-anchor="middle" class="axis">s: 0 → 0.12 m · 有效通道坐标</text></svg><p class="help">体相欧姆电势，φ(阳极液起点)=0；不是外电路 N 的零点。不含金属压降和电极界面跃迁，也不表示真实二维空间剖面。</p>`;
+}
+
+},
+"/src/view/transport-scene":function(module,exports,require){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.bridgePoints = bridgePoints;
+exports.pointOnPath = pointOnPath;
+exports.particlePoint = particlePoint;
+exports.ionLayer = ionLayer;
+exports.fieldLayer = fieldLayer;
+exports.externalFields = externalFields;
+exports.microIonLayer = microIonLayer;
+const transport_1 = require("../model/transport");
+const field_1 = require("../model/field");
+const text = (x, y, s) => `<text x="${x}" y="${y}" class="field-label" text-anchor="middle">${s}</text>`;
+function bridgePoints(y) { const pts = [[340, y + 110], [340, y + 5]]; for (let i = 1; i <= 12; i++) {
+    const t = i / 12;
+    pts.push([(1 - t) ** 2 * 340 + 2 * (1 - t) * t * 340 + t * t * 370, (1 - t) ** 2 * (y + 5) + 2 * (1 - t) * t * (y - 25) + t * t * (y - 25)]);
+} pts.push([530, y - 25]); for (let i = 1; i <= 12; i++) {
+    const t = i / 12;
+    pts.push([(1 - t) ** 2 * 530 + 2 * (1 - t) * t * 560 + t * t * 560, (1 - t) ** 2 * (y - 25) + 2 * (1 - t) * t * (y - 25) + t * t * (y + 5)]);
+} pts.push([560, y + 110]); return pts; }
+function pointOnPath(s, pts) { const lengths = pts.slice(1).map((p, i) => Math.hypot(p[0] - pts[i][0], p[1] - pts[i][1])); let dist = Math.max(0, Math.min(1, s)) * lengths.reduce((a, b) => a + b, 0); for (let i = 0; i < lengths.length; i++) {
+    if (dist <= lengths[i] || i === lengths.length - 1) {
+        const t = dist / lengths[i], tx = (pts[i + 1][0] - pts[i][0]) / lengths[i], ty = (pts[i + 1][1] - pts[i][1]) / lengths[i];
+        return { x: pts[i][0] + t * (pts[i + 1][0] - pts[i][0]), y: pts[i][1] + t * (pts[i + 1][1] - pts[i][1]), tx, ty };
+    }
+    dist -= lengths[i];
+} return { x: 0, y: 0, tx: 1, ty: 0 }; }
+function particlePoint(region, s, lane, y) {
+    if (region === 'bridge') {
+        const p = pointOnPath(s, bridgePoints(y));
+        return { ...p, x: p.x - p.ty * lane * 2, y: p.y + p.tx * lane * 2 };
+    }
+    return { x: (region === 'anode' ? 257 : 560) + s * 84, y: (y + 420) / 2 + lane * (320 - y) / 2, tx: 1, ty: 0 };
+}
+function glyph(id, x, y, r, region, s, opacity = 1) { const ion = transport_1.IONS[id]; return `<g class="ion-tracer clickable" data-ion="${id}" data-region="${region}" data-position="${s.toFixed(5)}" role="button" tabindex="0" aria-label="检查 ${ion.label}" opacity="${opacity}"><circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${r + 4}" fill="transparent"/><circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${r}" fill="#132331" stroke="${ion.color}" stroke-width="1.3"/><text x="${x.toFixed(2)}" y="${(y + 3).toFixed(2)}" fill="${ion.color}" font-size="${id === 'so4' ? 7 : 8}" text-anchor="middle">${ion.label}</text></g>`; }
+function ionLayer(lab, l, y) {
+    if (l.process !== 'all' && l.process !== 'ion')
+        return '';
+    const t = lab.transport();
+    const selected = l.ions ?? Object.keys(transport_1.IONS);
+    let out = '';
+    for (const p of lab.tracers.particles) {
+        if (!selected.includes(p.ion))
+            continue;
+        const r = t.regions.find(r => r.id === p.region);
+        if (r.mean[p.ion] === 0)
+            continue;
+        const q = particlePoint(p.region, p.s, p.lane, y);
+        const opacity = .4 + .6 * Math.min(1, Math.min(p.s, 1 - p.s) / .06);
+        out += glyph(p.ion, q.x, q.y, p.region === 'bridge' ? 9 : 11, p.region, p.s, opacity);
+    }
+    return `<g class="ion-layer">${out}</g>`;
+}
+function arrow(p, E, color = '#63dce8', lengthScale = 1) { if (Math.abs(E) < 1e-12)
+    return ''; const sign = Math.sign(E), length = (9 + 17 * Math.tanh(Math.abs(E) / 2)) * lengthScale, dx = p.tx * sign, dy = p.ty * sign; const ax = p.x - dx * length / 2, ay = p.y - dy * length / 2, bx = p.x + dx * length / 2, by = p.y + dy * length / 2; return `<path d="M${ax} ${ay} L${bx} ${by} m${-dx * 5 - dy * 3} ${-dy * 5 + dx * 3} L${bx} ${by} l${-dx * 5 + dy * 3} ${-dy * 5 - dx * 3}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round"/>`; }
+function fieldLayer(lab, l, y) {
+    if (!l.field)
+        return '';
+    let body = '';
+    const t = lab.transport();
+    for (const region of t.regions) {
+        const f = region.field;
+        if (f.status !== 'solved') {
+            if (region.id !== 'bridge')
+                body += text(region.id === 'anode' ? 295 : 600, 401, region.resistance === 0 ? 'r=0 · 场未定量' : '场未定量');
+            continue;
+        }
+        if (l.fieldMode === 'strength') {
+            region.cells.forEach((_, i) => { const s = (i + .5) / region.cells.length, e = f.E[i], alpha = .10 + .55 * Math.tanh(Math.abs(e) / 3); if (region.id === 'bridge') {
+                const a = pointOnPath(i / 12, bridgePoints(y)), b = pointOnPath((i + 1) / 12, bridgePoints(y));
+                body += `<path d="M${a.x} ${a.y} L${b.x} ${b.y}" stroke="#63dce8" stroke-opacity="${alpha}" stroke-width="12"/>`;
+            }
+            else {
+                body += `<rect x="${(region.id === 'anode' ? 251 : 557) + i * 8}" y="374" width="8" height="23" fill="#63dce8" opacity="${alpha}"/>`;
+            } });
+        }
+        const count = region.id === 'bridge' ? 5 : 3;
+        for (let i = 0; i < count; i++) {
+            const s = (i + .5) / count, cell = Math.min(11, Math.floor(s * 12)), p = region.id === 'bridge' ? pointOnPath(s, bridgePoints(y)) : { x: (region.id === 'anode' ? 263 : 566) + i * 30, y: 385, tx: 1, ty: 0 };
+            body += arrow(p, f.E[cell], undefined, l.fieldMode === 'strength' ? .6 : 1);
+        }
+        const mean = f.E.reduce((a, b) => a + b, 0) / f.E.length;
+        body += region.id === 'bridge' ? text(450, y + 51, `平均 𝓔 ${mean.toFixed(2)} V/m`) + text(450, y + 68, '一维切向量 · 非二维场线') : text(region.id === 'anode' ? 300 : 603, 414, `𝓔 ${mean.toFixed(2)} V/m`);
+    }
+    return `<g class="field-layer" pointer-events="none" data-field-mode="${l.fieldMode ?? 'vectors'}">${body}</g>`;
+}
+function externalFields(lab, l) { if (!l.field)
+    return ''; const c = lab.snapshot().circuit, p = lab.params; let b = ''; c.branches.forEach((branch, i) => { const e = (0, field_1.resistorField)(branch.U).E; const x = p.topology === 'series' ? (i === 0 ? 542 : 437) : 490, y = p.topology === 'parallel' ? (i === 0 ? 85 : 167) : 123; b += arrow({ x, y, tx: -1, ty: 0 }, e, undefined, .8); b += text(x, y + 17, `${e.toFixed(1)} V/m`); }); return `<g class="field-layer external-field" pointer-events="none">${b}</g>`; }
+function microIonLayer(lab, l, edge) { if (l.process !== 'all' && l.process !== 'ion')
+    return ''; const region = lab.electrode === 'zn' ? 'anode' : 'cathode', t = lab.transport().regions.find(r => r.id === region); return `<g class="ion-layer">${lab.tracers.particles.filter(p => p.region === region && (l.ions ?? Object.keys(transport_1.IONS)).includes(p.ion) && t.mean[p.ion] > 0).map(p => { const direction = region === 'anode' ? p.s : 1 - p.s; return glyph(p.ion, edge + 60 + direction * 350, 180 + (p.id % 4) * 65 + p.lane * 16, 14, region, p.s); }).join('')}</g>`; }
+
+}
+};
+const __cache=Object.create(null);
+function load(id){if(__cache[id])return __cache[id].exports;const fn=__modules[id];if(!fn)throw new Error('Missing module '+id);const m={exports:{}};__cache[id]=m;fn(m,m.exports,(request)=>{if(request.endsWith('.css'))return {};let full=new URL(request,'https://example.invalid'+id).pathname.replace(/\.js$/,'').replace(/\.ts$/,'');return load(full);});return m.exports;}
+load('/src/main');
+})();
+</script></body></html>
