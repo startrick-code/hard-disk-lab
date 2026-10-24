@@ -63,7 +63,7 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path, PurePosixPath
-          from shutil import copy2, copyfileobj
+          from shutil import copytree, copyfileobj
           from zipfile import ZipFile
 
           target = Path("site/electrochemical-lab")
@@ -83,7 +83,7 @@ jobs:
                           with z.open(item) as src, out.open("wb") as dst:
                               copyfileobj(src, dst)
           else:
-              copy2("electrochemical-lab/index.html", target / "index.html")
+              copytree("electrochemical-lab", target, dirs_exist_ok=True)
           if not (target / "index.html").is_file():
               raise SystemExit("Electrochemical website package lacks index.html")
           PY
