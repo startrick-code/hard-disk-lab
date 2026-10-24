@@ -8,6 +8,7 @@ on:
       - hard-disk-console-pages-ready.zip
       - .github/workflows/publish-pages.yml
       - 'electrochemical-lab/**'
+      - electrochemical-lab-pages-ready.zip
   workflow_dispatch:
 
 permissions:
@@ -60,9 +61,32 @@ jobs:
       - name: Include electrochemical laboratory as a separate subsite
         shell: bash
         run: |
-          test -s electrochemical-lab/index.html
-          mkdir -p site/electrochemical-lab
-          cp electrochemical-lab/index.html site/electrochemical-lab/index.html
+          python3 - <<'PY'
+          from pathlib import Path, PurePosixPath
+          from shutil import copy2, copyfileobj
+          from zipfile import ZipFile
+
+          target = Path("site/electrochemical-lab")
+          archive = Path("electrochemical-lab-pages-ready.zip")
+          target.mkdir(parents=True, exist_ok=True)
+          if archive.is_file():
+              with ZipFile(archive) as z:
+                  for item in z.infolist():
+                      rel = PurePosixPath(item.filename)
+                      if not rel.parts or rel.is_absolute() or ".." in rel.parts or chr(92) in item.filename:
+                          raise SystemExit("Unsafe path in electrochemical website ZIP")
+                      out = target.joinpath(*rel.parts)
+                      if item.is_dir():
+                          out.mkdir(parents=True, exist_ok=True)
+                      else:
+                          out.parent.mkdir(parents=True, exist_ok=True)
+                          with z.open(item) as src, out.open("wb") as dst:
+                              copyfileobj(src, dst)
+          else:
+              copy2("electrochemical-lab/index.html", target / "index.html")
+          if not (target / "index.html").is_file():
+              raise SystemExit("Electrochemical website package lacks index.html")
+          PY
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
